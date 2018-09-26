@@ -8,28 +8,41 @@ public class spawnScript : MonoBehaviour {
     public float spawnMin = 2f;
     public float spawnMax = 3f;
 
-    float x;
-    float y;
-    Vector2 position;
+    float timer = 0.0f;
+    float waitingTime = 0.7f;
+
 
     // Use this for initialization
-    void Start () {
-
+    void Start()
+    {
         Spawn();
+    }
 
-	}
+    void Update () {
+        timer += Time.deltaTime;
+        if (timer > waitingTime)
+        {
+            timer = 0.0f;
+            Spawn();
+        }
+
+        
+
+    }
 	
     void Spawn() {
-        /*
-        x = Random.Range(-130, 130);
-        y = Random.Range(-135, 50);
-        position = new Vector2(x, y);
-        transform.position = position;
-        */
+
+        float x, y;
+        x = transform.position.x;
+        y = transform.position.y;
+
+        float delta = Random.Range(-4f, 4f);
+
+        Vector3 position = transform.position;
+        position.y = y + delta;
 
         Instantiate(obj[Random.Range(0, obj.GetLength(0))], position, Quaternion.identity);
-        Invoke("Spawn", Random.Range(spawnMin, spawnMax));
-
+     
     }
 
 }
