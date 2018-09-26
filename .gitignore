@@ -34,3 +34,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+tartines/Assets/Scripts/PlayerController.cs
+tartines/Assets/Scripts/PlayerController.cs.meta
