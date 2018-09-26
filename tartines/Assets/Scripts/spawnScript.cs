@@ -7,6 +7,7 @@ public class spawnScript : MonoBehaviour {
     public GameObject[] obj;
     public float spawnMin = 2f;
     public float spawnMax = 3f;
+    GameObject obstacle;
 
     float timer = 0.0f;
     float waitingTime = 0.7f;
@@ -19,14 +20,15 @@ public class spawnScript : MonoBehaviour {
     }
 
     void Update () {
+
         timer += Time.deltaTime;
         if (timer > waitingTime)
         {
             timer = 0.0f;
+            DestroyGameObject(obstacle);
             Spawn();
-        }
 
-        
+        }
 
     }
 	
@@ -41,8 +43,15 @@ public class spawnScript : MonoBehaviour {
         Vector3 position = transform.position;
         position.y = y + delta;
 
-        Instantiate(obj[Random.Range(0, obj.GetLength(0))], position, Quaternion.identity);
-     
+        obstacle = Instantiate(obj[Random.Range(0, obj.GetLength(0))], position, Quaternion.identity);
+
+
     }
+
+    void DestroyGameObject(GameObject obstacle)
+    {
+        Destroy(obstacle,2);
+    }
+
 
 }
