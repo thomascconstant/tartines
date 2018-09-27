@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chunk {
+public class Chunk
+{
 
     public Obstacle[] obstacles;
+    public Path p = new Path();
 
     public class Segment
     {
         public Vector3 p1;
         public Vector3 p2;
         public LineDrawer l;
+        public Segment nextUp;
+        public Segment nextDown;
+        public Segment nextMilieu;
 
         public enum HauteurSegment
         {
@@ -31,7 +36,7 @@ public class Chunk {
         public HauteurSegment hauteur;
         public CoteSegment cote;
 
-        public Segment(HauteurSegment h,CoteSegment c)
+        public Segment(HauteurSegment h, CoteSegment c)
         {
             hauteur = h;
             cote = c;
@@ -56,10 +61,10 @@ public class Chunk {
 
             l.DrawLineInGameView(p1, p2, col);
         }
-        
+
         public bool IsSame(Segment s)
         {
-            if(Mathf.Abs(s.p1.x - p1.x) < 0.00001 && Mathf.Abs(s.p1.y - p1.y) < 0.00001 && 
+            if (Mathf.Abs(s.p1.x - p1.x) < 0.00001 && Mathf.Abs(s.p1.y - p1.y) < 0.00001 &&
                Mathf.Abs(s.p2.x - p2.x) < 0.00001 && Mathf.Abs(s.p2.y - p2.y) < 0.00001)
             {
                 return true;
@@ -74,17 +79,18 @@ public class Chunk {
 
     }
 
-    List<Segment> segments = new List<Segment>();   
+    public List<Segment> segments = new List<Segment>();
 
 
-	public void CreateChunk () {
+    public void CreateChunk()
+    {
 
         obstacles = new Obstacle[4];
         obstacles[0] = new Obstacle(Obstacle.HauteurObstacle.OBS_HAUT);
 
-        Vector3 p1 = new Vector3(-10,5,0);
-        Vector3 p2 = new Vector3(10,5,0);
-        Vector3 p3 = new Vector3(3,2,0);
+        Vector3 p1 = new Vector3(-10, 5, 0);
+        Vector3 p2 = new Vector3(10, 5, 0);
+        Vector3 p3 = new Vector3(3, 2, 0);
 
         obstacles[0].CreateTriangle(p1, p2, p3);
         obstacles[0].DrawSegment();
@@ -101,16 +107,16 @@ public class Chunk {
 
         obstacles[2] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU);
 
-        p1 = new Vector3(-2, 0.5f, 0);
-        p2 = new Vector3(3, 0.5f, 0);
-        p3 = new Vector3(3, -1, 0);
-        Vector3 p4 = new Vector3(-2, -1, 0);
+        p1 = new Vector3(-1, 1.5f, 0);
+        p2 = new Vector3(4, 1.5f, 0);
+        p3 = new Vector3(4, -1, 0);
+        Vector3 p4 = new Vector3(-1, -1, 0);
 
 
         obstacles[2].CreateRectangle(p1, p2, p3, p4);
         obstacles[2].DrawSegment();
 
-        Vector3 t = new Vector3(-5, -1, 0);
+        Vector3 t = new Vector3(-6, -1, 0);
 
         p1 += t;
         p2 += t;
@@ -128,7 +134,8 @@ public class Chunk {
     {
         segments.Clear();
 
-        foreach(Obstacle o1 in obstacles) {
+        foreach (Obstacle o1 in obstacles)
+        {
             foreach (Vector3 s in o1.sommets)
             {
 
@@ -137,7 +144,7 @@ public class Chunk {
                 bool checkDown = true;
                 foreach (Vector3 s2 in o1.sommets)
                 {
-                    if(Mathf.Abs(s.x - s2.x) < 0.0001)
+                    if (Mathf.Abs(s.x - s2.x) < 0.0001)
                     {
                         if (s2.y > s.y)
                             checkUp = false;
@@ -147,7 +154,7 @@ public class Chunk {
                 }
 
                 //Cas up
-                if(checkUp)
+                if (checkUp)
                 {
                     double dist = double.MaxValue;
                     Vector3 intersec = new Vector3();
@@ -158,7 +165,7 @@ public class Chunk {
                         if (o1 != o2)
                         {
                             Vector3 intersecCur = new Vector3();
-                            if (o2.GetIntersec(s, ref intersecCur,true, false))
+                            if (o2.GetIntersec(s, ref intersecCur, true, false))
                             {
                                 double distCur = Mathf.Abs(intersecCur.y - s.y);
                                 if (distCur < dist)
@@ -175,7 +182,7 @@ public class Chunk {
                     if (exist)
                     {
                         Segment.HauteurSegment h = Segment.HauteurSegment.SEG_NONE;
-                        Segment.CoteSegment c =  Segment.CoteSegment.SEG_NONE;
+                        Segment.CoteSegment c = Segment.CoteSegment.SEG_NONE;
 
                         if (o1.hauteur == Obstacle.HauteurObstacle.OBS_HAUT)
                         {
@@ -215,17 +222,17 @@ public class Chunk {
                             if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_BAS)
                                 h = Segment.HauteurSegment.SEG_BAS;
                         }
-                        
-                        Segment seg = new Segment(h,c);
+
+                        Segment seg = new Segment(h, c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
                         segments.Add(seg);
                     }
-                    
+
                 }
 
                 //Cas down
-                if(checkDown)
+                if (checkDown)
                 {
                     double dist = double.MaxValue;
                     Vector3 intersec = new Vector3();
@@ -236,7 +243,7 @@ public class Chunk {
                         if (o1 != o2)
                         {
                             Vector3 intersecCur = new Vector3();
-                            if (o2.GetIntersec(s, ref intersecCur,false,true))
+                            if (o2.GetIntersec(s, ref intersecCur, false, true))
                             {
                                 double distCur = Mathf.Abs(intersecCur.y - s.y);
                                 if (distCur < dist)
@@ -293,25 +300,25 @@ public class Chunk {
                                 h = Segment.HauteurSegment.SEG_BAS;
                         }
 
-                        Segment seg = new Segment(h,c);
+                        Segment seg = new Segment(h, c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
                         segments.Add(seg);
                     }
                 }
 
-                
+
             }
         }
-               
 
-        for(int i=segments.Count-1;i>=0;i--)
+
+        for (int i = segments.Count - 1; i >= 0; i--)
         {
             for (int j = segments.Count - 1; j >= 0; j--)
             {
-                if(segments[j].IsSame(segments[i]) && i != j)
+                if (segments[j].IsSame(segments[i]) && i != j)
                 {
-                    if(segments[j].cote == Segment.CoteSegment.SEG_NONE)
+                    if (segments[j].cote == Segment.CoteSegment.SEG_NONE)
                         segments.RemoveAt(j);
                     else if (segments[i].cote == Segment.CoteSegment.SEG_NONE)
                         segments.RemoveAt(i);
@@ -325,15 +332,21 @@ public class Chunk {
 
         }
 
+        p.CreerChemin(this);
         //segments.RemoveAll(s2 => s2.IsSame(segments[i]));
 
     }
 
     public void ShowSegments()
     {
-        foreach(Segment s in segments)
+        foreach (Segment s in segments)
         {
             s.Draw(Color.green);
         }
+        p.DrawPath(this);
     }
+
+
 }
+
+
