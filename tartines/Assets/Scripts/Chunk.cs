@@ -12,15 +12,48 @@ public class Chunk {
         public Vector3 p2;
         public LineDrawer l;
 
-        public Segment()
+        public enum HauteurSegment
         {
+            SEG_HAUT,
+            SEG_MILIEU,
+            SEG_BAS,
+            SEG_NONE,
+        }
+
+        public enum CoteSegment
+        {
+            SEG_ENTREE,
+            SEG_SORTIE,
+            SEG_NONE,
+
+        }
+
+        public HauteurSegment hauteur;
+        public CoteSegment cote;
+
+        public Segment(HauteurSegment h,CoteSegment c)
+        {
+            hauteur = h;
+            cote = c;
+
             p1 = new Vector3();
             p2 = new Vector3();
         }
 
         public void Draw(Color col)
         {
-            l = new LineDrawer();
+            float epaisseur = 0.2f;
+            if (hauteur == HauteurSegment.SEG_MILIEU)
+                epaisseur = 0.4f;
+            l = new LineDrawer(epaisseur);
+
+            if (cote == CoteSegment.SEG_SORTIE)
+                col = Color.cyan;
+            if (cote == CoteSegment.SEG_ENTREE)
+                col = Color.green;
+            if (cote == CoteSegment.SEG_NONE)
+                col = Color.gray;
+
             l.DrawLineInGameView(p1, p2, col);
         }
         
@@ -46,8 +79,8 @@ public class Chunk {
 
 	public void CreateChunk () {
 
-        obstacles = new Obstacle[3];
-        obstacles[0] = new Obstacle();
+        obstacles = new Obstacle[4];
+        obstacles[0] = new Obstacle(Obstacle.HauteurObstacle.OBS_HAUT);
 
         Vector3 p1 = new Vector3(-10,5,0);
         Vector3 p2 = new Vector3(10,5,0);
@@ -56,7 +89,7 @@ public class Chunk {
         obstacles[0].CreateTriangle(p1, p2, p3);
         obstacles[0].DrawSegment();
 
-        obstacles[1] = new Obstacle();
+        obstacles[1] = new Obstacle(Obstacle.HauteurObstacle.OBS_BAS);
 
         p1 = new Vector3(-10, -5, 0);
         p2 = new Vector3(10, -5, 0);
@@ -66,16 +99,28 @@ public class Chunk {
         obstacles[1].CreateTriangle(p1, p2, p3);
         obstacles[1].DrawSegment();
 
-        obstacles[2] = new Obstacle();
+        obstacles[2] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU);
 
         p1 = new Vector3(-2, 0.5f, 0);
-        p2 = new Vector3(3, 1, 0);
-        p3 = new Vector3(0, 0, 0);
-        //Vector3 p4 = new Vector3(-2, 0, 0);
+        p2 = new Vector3(3, 0.5f, 0);
+        p3 = new Vector3(3, -1, 0);
+        Vector3 p4 = new Vector3(-2, -1, 0);
 
 
-        obstacles[2].CreateTriangle(p1, p2, p3);
+        obstacles[2].CreateRectangle(p1, p2, p3, p4);
         obstacles[2].DrawSegment();
+
+        Vector3 t = new Vector3(-5, -1, 0);
+
+        p1 += t;
+        p2 += t;
+        p3 += t;
+        p4 += t;
+
+        obstacles[3] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU);
+
+        obstacles[3].CreateRectangle(p1, p2, p3, p4);
+        obstacles[3].DrawSegment();
 
     }
 
@@ -107,6 +152,7 @@ public class Chunk {
                     double dist = double.MaxValue;
                     Vector3 intersec = new Vector3();
                     bool exist = false;
+                    Obstacle oGood = null;
                     foreach (Obstacle o2 in obstacles)
                     {
                         if (o1 != o2)
@@ -120,6 +166,7 @@ public class Chunk {
                                     dist = distCur;
                                     intersec.Set(intersecCur.x, intersecCur.y, intersecCur.z);
                                     exist = true;
+                                    oGood = o2;
                                 }
                             }
                         }
@@ -127,7 +174,49 @@ public class Chunk {
 
                     if (exist)
                     {
-                        Segment seg = new Segment();
+                        Segment.HauteurSegment h = Segment.HauteurSegment.SEG_NONE;
+                        Segment.CoteSegment c =  Segment.CoteSegment.SEG_NONE;
+
+                        if (o1.hauteur == Obstacle.HauteurObstacle.OBS_HAUT)
+                        {
+                            c = Segment.CoteSegment.SEG_NONE;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_MILIEU)
+                                h = Segment.HauteurSegment.SEG_HAUT;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_BAS)
+                                h = Segment.HauteurSegment.SEG_MILIEU;
+                        }
+
+                        if (o1.hauteur == Obstacle.HauteurObstacle.OBS_BAS)
+                        {
+                            c = Segment.CoteSegment.SEG_NONE;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_MILIEU)
+                                h = Segment.HauteurSegment.SEG_BAS;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_HAUT)
+                                h = Segment.HauteurSegment.SEG_MILIEU;
+                        }
+
+                        if (o1.hauteur == Obstacle.HauteurObstacle.OBS_MILIEU)
+                        {
+                            c = Segment.CoteSegment.SEG_SORTIE;
+
+                            foreach (Vector3 sTest in o1.sommets)
+                            {
+                                if (sTest.x - s.x > 0.001)
+                                    c = Segment.CoteSegment.SEG_ENTREE;
+                            }
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_HAUT)
+                                h = Segment.HauteurSegment.SEG_HAUT;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_BAS)
+                                h = Segment.HauteurSegment.SEG_BAS;
+                        }
+                        
+                        Segment seg = new Segment(h,c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
                         segments.Add(seg);
@@ -141,6 +230,7 @@ public class Chunk {
                     double dist = double.MaxValue;
                     Vector3 intersec = new Vector3();
                     bool exist = false;
+                    Obstacle oGood = null;
                     foreach (Obstacle o2 in obstacles)
                     {
                         if (o1 != o2)
@@ -154,13 +244,56 @@ public class Chunk {
                                     dist = distCur;
                                     intersec.Set(intersecCur.x, intersecCur.y, intersecCur.z);
                                     exist = true;
+                                    oGood = o2;
                                 }
                             }
                         }
                     }
                     if (exist)
                     {
-                        Segment seg = new Segment();
+                        Segment.HauteurSegment h = Segment.HauteurSegment.SEG_NONE;
+                        Segment.CoteSegment c = Segment.CoteSegment.SEG_NONE;
+
+                        if (o1.hauteur == Obstacle.HauteurObstacle.OBS_HAUT)
+                        {
+                            c = Segment.CoteSegment.SEG_NONE;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_MILIEU)
+                                h = Segment.HauteurSegment.SEG_HAUT;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_BAS)
+                                h = Segment.HauteurSegment.SEG_MILIEU;
+                        }
+
+                        if (o1.hauteur == Obstacle.HauteurObstacle.OBS_BAS)
+                        {
+                            c = Segment.CoteSegment.SEG_NONE;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_MILIEU)
+                                h = Segment.HauteurSegment.SEG_BAS;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_HAUT)
+                                h = Segment.HauteurSegment.SEG_MILIEU;
+                        }
+
+                        if (o1.hauteur == Obstacle.HauteurObstacle.OBS_MILIEU)
+                        {
+                            c = Segment.CoteSegment.SEG_SORTIE;
+
+                            foreach (Vector3 sTest in o1.sommets)
+                            {
+                                if (sTest.x - s.x > 0.001)
+                                    c = Segment.CoteSegment.SEG_ENTREE;
+                            }
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_HAUT)
+                                h = Segment.HauteurSegment.SEG_HAUT;
+
+                            if (oGood.hauteur == Obstacle.HauteurObstacle.OBS_BAS)
+                                h = Segment.HauteurSegment.SEG_BAS;
+                        }
+
+                        Segment seg = new Segment(h,c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
                         segments.Add(seg);
@@ -178,7 +311,15 @@ public class Chunk {
             {
                 if(segments[j].IsSame(segments[i]) && i != j)
                 {
-                    segments.RemoveAt(j);
+                    if(segments[j].cote == Segment.CoteSegment.SEG_NONE)
+                        segments.RemoveAt(j);
+                    else if (segments[i].cote == Segment.CoteSegment.SEG_NONE)
+                        segments.RemoveAt(i);
+                    else
+                    {
+                        segments[i].cote = Segment.CoteSegment.SEG_NONE;
+                        segments.RemoveAt(j);
+                    }
                 }
             }
 

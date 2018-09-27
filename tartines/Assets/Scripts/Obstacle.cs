@@ -9,9 +9,28 @@ public class Obstacle {
     private LineDrawer[] segments;
     private Color mycolor = Color.black;
 
+    public enum HauteurObstacle
+    {
+        OBS_HAUT,
+        OBS_MILIEU,
+        OBS_BAS,
+        OBS_NONE
+
+    }
+
+    public HauteurObstacle hauteur = HauteurObstacle.OBS_NONE;
+
+    public Obstacle(HauteurObstacle h)
+    {
+        hauteur = h;
+    }
+
+
+    
     public void DrawSegment()
     {
-        if (sommets == null)
+
+       if (sommets == null)
         {
             return;
         }
