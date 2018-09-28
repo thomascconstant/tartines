@@ -12,6 +12,8 @@ public class Segment
     public Segment nextMilieu;
     public Vector3 milieu;
     public float taille;
+    public float distanceObs;
+    public float distanceAParcourir;
 
     public enum HauteurSegment
     {

@@ -234,7 +234,7 @@ public class Chunk
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
                         seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
-                        seg.taille = Mathf.Abs(seg.p1.y) + Mathf.Abs(seg.p2.y);
+                        seg.taille = Mathf.Abs(seg.p1.y) + Mathf.Abs(seg.p2.y);                    
                         segments.Add(seg);
                     }
                 }

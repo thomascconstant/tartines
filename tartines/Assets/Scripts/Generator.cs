@@ -5,9 +5,10 @@ using UnityEngine;
 public class Generator : MonoBehaviour {
 
     public Chunk[] chunks;
+    public float[] diffs;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         chunks = new Chunk[1];
         chunks[0] = new Chunk();
         chunks[0].CreateChunk();

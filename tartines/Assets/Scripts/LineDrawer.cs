@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LineDrawer
 {
     private LineRenderer lineRenderer;
     private float lineSize;
     private GameObject lineObj;
+
 
     public LineDrawer(float lineSize = 0.2f)
     {
@@ -37,12 +39,16 @@ public class LineDrawer
     }
 
     //Draws lines through the provided vertices
-    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color)
+    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, float diff = 0)
     {
         if (lineRenderer == null)
         {
             init(0.2f);
         }
+
+
+        Text Diff = lineObj.AddComponent<Text>();
+        Diff.text = "La difficulté est de : " + diff.ToString();
 
         //Set color
         lineRenderer.startColor = color;

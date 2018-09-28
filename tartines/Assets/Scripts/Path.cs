@@ -96,17 +96,38 @@ public class Path {
                 if (nbEntree <= 0)
                     lastMilieu = null;
             }
-
+        }
+        foreach (Segment s in segmentsList)
+        {
+            s.distanceAParcourir = Mathf.Abs(s.p1.y) + Mathf.Abs(s.p2.y);
+            if (s.nextMilieu != null)
+            {
+                s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextMilieu.p1.x);
+                if ((s.nextUp != null && s.nextUp.p1.x > s.nextMilieu.p1.x) || (s.nextDown != null && s.nextDown.p1.x > s.nextMilieu.p1.x))
+                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextMilieu.p1.x);
+                else if (s.nextDown != null && s.nextDown.p1.x < s.nextMilieu.p1.x)
+                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextDown.p1.x);
+                else if (s.nextUp != null && s.nextUp.p1.x < s.nextMilieu.p1.x)
+                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextUp.p1.x);
+            }
+            else
+            {
+                if (s.nextDown != null)
+                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextDown.p1.x);
+                else if (s.nextUp != null)
+                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextUp.p1.x);
+            }
         }
 
         
 
     }
 
-    void AddLine(Segment s1, Segment s2)
+    void AddLine(Segment s1, Segment s2, float x = 0)
     {
         LineDrawer l = new LineDrawer();
-        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, Color.red);
+
+        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, Color.red, x);
         PathView.Add(l);
     }
     public void DrawPath(Chunk c)
@@ -114,17 +135,19 @@ public class Path {
         PathView.Clear();
         foreach(Segment s in c.segments)
         {
-            if(s.nextUp != null)
+
+            float x = ParamDiff.CalculDiff(s);
+            if (s.nextUp != null)
             {
-                AddLine(s, s.nextUp);
+                AddLine(s, s.nextUp, x);
             }
             if (s.nextDown != null)
             {
-                AddLine(s, s.nextDown);
+                AddLine(s, s.nextDown, x);
             }
             if (s.nextMilieu != null)
             {
-                AddLine(s, s.nextMilieu);
+                AddLine(s, s.nextMilieu, x);
             }
         }
 

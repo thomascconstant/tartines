@@ -3,16 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ParamDiff {
-    
-    public float hauteurTouch; //distance que le touch du joueur doit parcourir pour atteindre le milieu du prochain segment
-    public float largeurSegment; //plus la largeur du segment est grande, plus c'est facile ; si la largeur du segment est inférieure à la taille du touch, challenge impossible 
-    public float temps; //temps que le joueur a pour atteindre le prochain segment (= temps de défilement de la zone de jeu)
-
-    public ParamDiff(float v, float h, float d, float l)
+  
+    /**
+     * v: vitesse de defilement du niveau
+     * h: distance que le joueur doit parcourir pour atteindre le milieu du prochain segment
+     * d: distance à l'obstacle le plus proche
+     * l: taille du segment, plus la taille du segment est grande, plus c'est facile ; si la taille du segment est inférieure à la taille du touch, challenge impossible
+     * */
+    public static float CalculDiff(Segment s/*float v, float h, float d, float l*/)
     {
-        hauteurTouch = h;
-        temps = d / v;
-        largeurSegment = l;
+        //temps que le joueur a pour atteindre le prochain segment (= temps de défilement de la zone de jeu)
+        float temps = s.distanceObs / 10;
+
+        //le paramètre de taille du segment (compris entre 0, impossible, et 1, trop facile) est multiplié par le paramètre liant temps et hauteur => l*(h/t)
+        float diff = s.taille * (s.distanceAParcourir / temps);
+
+        return diff;  
+
+    }
+
+    public static float CalculDiffChunk(Chunk c)
+    {
+        float diffChunk = 0;
+        foreach(Segment s in c.segments)
+        {
+            diffChunk += CalculDiff(s);
+        }
+        return diffChunk;
     }
 
 
