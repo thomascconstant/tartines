@@ -16,6 +16,8 @@ public class Chunk
         public Segment nextUp;
         public Segment nextDown;
         public Segment nextMilieu;
+        public Vector3 milieu;
+        public float taille;
 
         public enum HauteurSegment
         {
@@ -43,6 +45,7 @@ public class Chunk
 
             p1 = new Vector3();
             p2 = new Vector3();
+            milieu = new Vector3();
         }
 
         public void Draw(Color col)
@@ -226,6 +229,8 @@ public class Chunk
                         Segment seg = new Segment(h, c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
+                        seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y)/2, seg.p1.z);
+                        seg.taille = Mathf.Abs(seg.p1.y) + Mathf.Abs(seg.p2.y);
                         segments.Add(seg);
                     }
 
@@ -303,6 +308,8 @@ public class Chunk
                         Segment seg = new Segment(h, c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
+                        seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
+                        seg.taille = Mathf.Abs(seg.p1.y) + Mathf.Abs(seg.p2.y);
                         segments.Add(seg);
                     }
                 }

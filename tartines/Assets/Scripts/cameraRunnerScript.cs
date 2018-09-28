@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class cameraRunnerScript : MonoBehaviour {
 
-	// Update is called once per frame
-	void Update () {
+    public float vitesse = 10;
+
+    // Update is called once per frame
+    void Update () {
 
         var tCameraPosn = transform.localPosition;
-        transform.position += (Vector3.right * Time.deltaTime * 10);
+        transform.position += (Vector3.right * Time.deltaTime * vitesse);
 
     }
 }
