@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Path {
     
-    Chunk.Segment lastUp = null;
-    Chunk.Segment lastDown = null;
-    Chunk.Segment lastMilieu = null;
-    Chunk.Segment lastSortieDown = null;
-    Chunk.Segment lastSortieUp = null;
+    Segment lastUp = null;
+    Segment lastDown = null;
+    Segment lastMilieu = null;
+    Segment lastSortieDown = null;
+    Segment lastSortieUp = null;
 
     List<LineDrawer> PathView = new List<LineDrawer>();
 
@@ -16,17 +16,17 @@ public class Path {
 
     public void CreerChemin(Chunk c)
     {
-        List<Chunk.Segment> segmentsList = c.segments;
+        List<Segment> segmentsList = c.segments;
         segmentsList.Sort((x, y) => x.p1.x.CompareTo(y.p1.x));
-        foreach(Chunk.Segment s in segmentsList)
+        foreach(Segment s in segmentsList)
         {
-            if (s.hauteur == Chunk.Segment.HauteurSegment.SEG_MILIEU)
+            if (s.hauteur == Segment.HauteurSegment.SEG_MILIEU)
             {
-                if(lastUp != null && lastUp.cote == Chunk.Segment.CoteSegment.SEG_SORTIE)
+                if(lastUp != null && lastUp.cote == Segment.CoteSegment.SEG_SORTIE)
                 {
                     lastUp.nextMilieu = s;
                 }
-                if (lastDown != null && lastDown.cote == Chunk.Segment.CoteSegment.SEG_SORTIE)
+                if (lastDown != null && lastDown.cote == Segment.CoteSegment.SEG_SORTIE)
                 {
                     lastDown.nextMilieu = s;
                 }
@@ -42,14 +42,14 @@ public class Path {
                 nbEntree = 2;
             }
 
-            if (s.hauteur == Chunk.Segment.HauteurSegment.SEG_HAUT)
+            if (s.hauteur == Segment.HauteurSegment.SEG_HAUT)
             {
                 if (lastUp != null)
                 {
                     lastUp.nextUp = s;
                 }
 
-                if (s.cote == Chunk.Segment.CoteSegment.SEG_ENTREE)
+                if (s.cote == Segment.CoteSegment.SEG_ENTREE)
                 {
                     if (lastSortieDown != null)
                     {
@@ -61,23 +61,23 @@ public class Path {
                     }
                 }
                 lastUp = s;
-                if (s.cote == Chunk.Segment.CoteSegment.SEG_SORTIE)
+                if (s.cote == Segment.CoteSegment.SEG_SORTIE)
                     lastSortieUp = s;
 
-                if (s.cote == Chunk.Segment.CoteSegment.SEG_ENTREE)
+                if (s.cote == Segment.CoteSegment.SEG_ENTREE)
                     nbEntree --;
                 if (nbEntree <= 0)
                     lastMilieu = null;
             }
 
-            if (s.hauteur == Chunk.Segment.HauteurSegment.SEG_BAS)
+            if (s.hauteur == Segment.HauteurSegment.SEG_BAS)
             {
                 if (lastDown != null)
                 {
                     lastDown.nextDown = s;
                 }
 
-                if (s.cote == Chunk.Segment.CoteSegment.SEG_ENTREE)
+                if (s.cote == Segment.CoteSegment.SEG_ENTREE)
                 {
                     if (lastSortieUp != null)
                     {
@@ -89,9 +89,9 @@ public class Path {
                     }
                 }
                 lastDown = s;
-                if (s.cote == Chunk.Segment.CoteSegment.SEG_SORTIE)
+                if (s.cote == Segment.CoteSegment.SEG_SORTIE)
                     lastSortieDown = s;
-                if (s.cote == Chunk.Segment.CoteSegment.SEG_ENTREE)
+                if (s.cote == Segment.CoteSegment.SEG_ENTREE)
                     nbEntree--;
                 if (nbEntree <= 0)
                     lastMilieu = null;
@@ -103,7 +103,7 @@ public class Path {
 
     }
 
-    void AddLine(Chunk.Segment s1, Chunk.Segment s2)
+    void AddLine(Segment s1, Segment s2)
     {
         LineDrawer l = new LineDrawer();
         l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, Color.red);
@@ -112,7 +112,7 @@ public class Path {
     public void DrawPath(Chunk c)
     {
         PathView.Clear();
-        foreach(Chunk.Segment s in c.segments)
+        foreach(Segment s in c.segments)
         {
             if(s.nextUp != null)
             {
