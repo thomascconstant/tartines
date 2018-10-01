@@ -39,16 +39,23 @@ public class LineDrawer
     }
 
     //Draws lines through the provided vertices
-    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, float diff = 0)
+    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, Segment s1 = null, Segment s2 = null)
     {
         if (lineRenderer == null)
         {
             init(0.2f);
         }
 
+        //float diff = ParamDiff.CalculDiff(seg);
 
-        Text Diff = lineObj.AddComponent<Text>();
-        Diff.text = "La difficulté est de : " + diff.ToString();
+        if (s1 != null)
+        {
+            Text Diff = lineObj.AddComponent<Text>();
+            Diff.text = "Pour le segment 1: \nLe milieu est:" + s1.milieu + "\nLa distance à parcourir est:" + s1.distanceAParcourir +
+                "\nLa distance à l'obstacle est:" + s1.distanceObs + "\nLa taille du segment est:" + s1.taille +
+                "\n\nPour le segment 2: \nLe milieu est:" + s2.milieu + "\nLa distance à parcourir est:" + s2.distanceAParcourir +
+                "\nLa distance à l'obstacle est:" + s2.distanceObs + "\nLa taille du segment est:" + s2.taille; 
+        }
 
         //Set color
         lineRenderer.startColor = color;

@@ -9,25 +9,25 @@ public class Chunk
     public Path p = new Path();
 
     public List<Segment> segments = new List<Segment>();
-
+    // On crée tout les obstacles en position positive
     public void CreateChunk()
     {
 
         obstacles = new Obstacle[4];
         obstacles[0] = new Obstacle(Obstacle.HauteurObstacle.OBS_HAUT);
 
-        Vector3 p1 = new Vector3(-10, 5, 0);
-        Vector3 p2 = new Vector3(10, 5, 0);
-        Vector3 p3 = new Vector3(3, 2, 0);
+        Vector3 p1 = new Vector3(0, 15, 0);
+        Vector3 p2 = new Vector3(20, 15, 0);
+        Vector3 p3 = new Vector3(13, 12, 0);
 
         obstacles[0].CreateTriangle(p1, p2, p3);
         obstacles[0].DrawSegment();
 
         obstacles[1] = new Obstacle(Obstacle.HauteurObstacle.OBS_BAS);
 
-        p1 = new Vector3(-10, -5, 0);
-        p2 = new Vector3(10, -5, 0);
-        p3 = new Vector3(-3, -3, 0);
+        p1 = new Vector3(0, 5, 0);
+        p2 = new Vector3(20, 5, 0);
+        p3 = new Vector3(7, 7, 0);
 
 
         obstacles[1].CreateTriangle(p1, p2, p3);
@@ -35,10 +35,10 @@ public class Chunk
 
         obstacles[2] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU);
 
-        p1 = new Vector3(-1, 1.5f, 0);
-        p2 = new Vector3(4, 1.5f, 0);
-        p3 = new Vector3(4, -1, 0);
-        Vector3 p4 = new Vector3(-1, -1, 0);
+        p1 = new Vector3(9, 11.5f, 0);
+        p2 = new Vector3(14, 11.5f, 0);
+        p3 = new Vector3(14, 9, 0);
+        Vector3 p4 = new Vector3(9, 9, 0);
 
 
         obstacles[2].CreateRectangle(p1, p2, p3, p4);
@@ -154,8 +154,8 @@ public class Chunk
                         Segment seg = new Segment(h, c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
-                        seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
-                        seg.taille = Mathf.Abs(seg.p1.y) + Mathf.Abs(seg.p2.y);
+                        seg.milieu = Segment.GetMilieu(seg);
+                        seg.taille = Mathf.Abs(seg.p1.y - seg.p2.y);
                         segments.Add(seg);
                     }
 
@@ -233,8 +233,8 @@ public class Chunk
                         Segment seg = new Segment(h, c);
                         seg.p1.Set(s.x, s.y, s.z);
                         seg.p2.Set(intersec.x, intersec.y, intersec.z);
-                        seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
-                        seg.taille = Mathf.Abs(seg.p1.y) + Mathf.Abs(seg.p2.y);                    
+                        seg.milieu = Segment.GetMilieu(seg);
+                        seg.taille = Mathf.Abs(seg.p1.y - seg.p2.y);
                         segments.Add(seg);
                     }
                 }

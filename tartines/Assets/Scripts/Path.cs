@@ -12,13 +12,15 @@ public class Path {
 
     List<LineDrawer> PathView = new List<LineDrawer>();
 
+    List<List<Segment>> PathSegments = new List<List<Segment>>();
+
     int nbEntree = 2;
 
     public void CreerChemin(Chunk c)
     {
         List<Segment> segmentsList = c.segments;
         segmentsList.Sort((x, y) => x.p1.x.CompareTo(y.p1.x));
-        foreach(Segment s in segmentsList)
+        foreach (Segment s in segmentsList)
         {
             if (s.hauteur == Segment.HauteurSegment.SEG_MILIEU)
             {
@@ -97,37 +99,22 @@ public class Path {
                     lastMilieu = null;
             }
         }
-        foreach (Segment s in segmentsList)
+
+        // Creation des chemins
+        for (int i = 0; i < segmentsList.Count; i++)
         {
-            s.distanceAParcourir = Mathf.Abs(s.p1.y) + Mathf.Abs(s.p2.y);
-            if (s.nextMilieu != null)
-            {
-                s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextMilieu.p1.x);
-                if ((s.nextUp != null && s.nextUp.p1.x > s.nextMilieu.p1.x) || (s.nextDown != null && s.nextDown.p1.x > s.nextMilieu.p1.x))
-                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextMilieu.p1.x);
-                else if (s.nextDown != null && s.nextDown.p1.x < s.nextMilieu.p1.x)
-                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextDown.p1.x);
-                else if (s.nextUp != null && s.nextUp.p1.x < s.nextMilieu.p1.x)
-                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextUp.p1.x);
-            }
-            else
-            {
-                if (s.nextDown != null)
-                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextDown.p1.x);
-                else if (s.nextUp != null)
-                    s.distanceObs = Mathf.Abs(s.p1.x) + Mathf.Abs(s.nextUp.p1.x);
-            }
+           
+
+
+
         }
+}
 
-        
-
-    }
-
-    void AddLine(Segment s1, Segment s2, float x = 0)
+    void AddLine(Segment s1, Segment s2)
     {
         LineDrawer l = new LineDrawer();
 
-        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, Color.red, x);
+        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, Color.red, s1, s2);
         PathView.Add(l);
     }
     public void DrawPath(Chunk c)
@@ -135,21 +122,35 @@ public class Path {
         PathView.Clear();
         foreach(Segment s in c.segments)
         {
-
-            float x = ParamDiff.CalculDiff(s);
+            
             if (s.nextUp != null)
             {
-                AddLine(s, s.nextUp, x);
+                AddLine(s, s.nextUp);
             }
             if (s.nextDown != null)
             {
-                AddLine(s, s.nextDown, x);
+                AddLine(s, s.nextDown);
             }
             if (s.nextMilieu != null)
             {
-                AddLine(s, s.nextMilieu, x);
+                AddLine(s, s.nextMilieu);
             }
         }
+
+    }
+
+    // cree un chemin
+    void CreatePath(List<Segment> segments)
+    {
+        List<Segment> chemin = new List<Segment>();
+        foreach(Segment seg in segments)
+        {
+            if (!chemin.Contains(seg))
+            {
+                chemin.Add(seg);
+            }
+        }
+
 
     }
 

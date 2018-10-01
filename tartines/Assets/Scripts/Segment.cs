@@ -76,6 +76,16 @@ public class Segment
         return false;
     }
 
+    public static Vector3 GetMilieu(Segment seg)
+    {
+        if (seg.p1.y > seg.p2.y)
+            seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
+        else
+            seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
+
+        return seg.milieu;
+    }
+
 
 }
 
