@@ -34,8 +34,7 @@ public class spawnScript : MonoBehaviour {
 	
     void Spawn() {
 
-        float x, y;
-        x = transform.position.x;
+        float y;
         y = transform.position.y;
 
         float delta = Random.Range(-4f, 4f);

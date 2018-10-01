@@ -12,7 +12,7 @@ public class Path {
 
     List<LineDrawer> PathView = new List<LineDrawer>();
 
-    List<List<Segment>> PathSegments = new List<List<Segment>>();
+    public List<List<Segment>> PathSegments = new List<List<Segment>>();
 
     int nbEntree = 2;
 
@@ -24,7 +24,7 @@ public class Path {
         {
             if (s.hauteur == Segment.HauteurSegment.SEG_MILIEU)
             {
-                if(lastUp != null && lastUp.cote == Segment.CoteSegment.SEG_SORTIE)
+                if (lastUp != null && lastUp.cote == Segment.CoteSegment.SEG_SORTIE)
                 {
                     lastUp.nextMilieu = s;
                 }
@@ -32,7 +32,7 @@ public class Path {
                 {
                     lastDown.nextMilieu = s;
                 }
-                if (lastMilieu != null )
+                if (lastMilieu != null)
                 {
                     lastMilieu.nextMilieu = s;
                 }
@@ -67,7 +67,7 @@ public class Path {
                     lastSortieUp = s;
 
                 if (s.cote == Segment.CoteSegment.SEG_ENTREE)
-                    nbEntree --;
+                    nbEntree--;
                 if (nbEntree <= 0)
                     lastMilieu = null;
             }
@@ -100,15 +100,27 @@ public class Path {
             }
         }
 
+        List<Segment> cheminTemp = new List<Segment>();
         // Creation des chemins
-        for (int i = 0; i < segmentsList.Count; i++)
-        {
-           
+        //for (int i = 0; i < segmentsList.Count; i++)
+       // {
+            /*if (segmentsList[i].nextUp != null)
+                Debug.Log("\nUP Segment depart:" + segmentsList[i].milieu + "\nSegment arrivée:" + segmentsList[i].nextUp.milieu);
+            if (segmentsList[i].nextDown != null)
+                Debug.Log("\nDOWN Segment depart:" + segmentsList[i].milieu + "\nSegment arrivée:" + segmentsList[i].nextDown.milieu);
+            if (segmentsList[i].nextMilieu != null)
+                Debug.Log("\nMILIEU Segment depart:" + segmentsList[i].milieu + "\nSegment arrivée:" + segmentsList[i].nextMilieu.milieu);
+            if (segmentsList[i].nextMilieu == null && segmentsList[i].nextDown == null && segmentsList[i].nextUp == null)
+                Debug.Log("\nJe n'ai pas de next! " + segmentsList[i].milieu);*/
+           // if (segmentsList[i].nextUp != null || segmentsList[i].nextDown != null)
+           // {
+                AddSegment(cheminTemp, segmentsList[0]);
+           // }
 
 
-
-        }
-}
+       // }
+        Debug.Log(PathSegments.Count);
+    }
 
     void AddLine(Segment s1, Segment s2)
     {
@@ -139,19 +151,43 @@ public class Path {
 
     }
 
-    // cree un chemin
-    void CreatePath(List<Segment> segments)
+    public void AddSegment(List<Segment> chemin, Segment seg)
     {
-        List<Segment> chemin = new List<Segment>();
-        foreach(Segment seg in segments)
+        if (seg.nextUp != null && seg.nextDown != null)
         {
-            if (!chemin.Contains(seg))
-            {
-                chemin.Add(seg);
-            }
+            
+            chemin.Add(seg);
+            List<Segment> cheminBis = new List<Segment>(chemin);
+            AddSegment(cheminBis, seg.nextUp);
+            AddSegment(chemin, seg.nextDown);
+            /*float rand = Random.Range(0, 2);
+            if (rand < 0.5f)
+                AddSegment(chemin, seg.nextDown);
+            else
+                AddSegment(chemin, seg.nextUp);*/
         }
-
-
+        else if (seg.nextUp != null)
+        {
+            chemin.Add(seg);
+            AddSegment(chemin, seg.nextUp);
+        }
+        else if (seg.nextDown != null)
+        {
+            chemin.Add(seg);
+            AddSegment(chemin, seg.nextDown);
+        }
+        else if (seg.nextMilieu != null)
+        {
+            chemin.Add(seg);
+            AddSegment(chemin, seg.nextMilieu);
+        }
+        else
+        {
+            chemin.Add(seg);
+            List<Segment> bonChemin = new List<Segment>(chemin);
+            chemin.Clear();
+            PathSegments.Add(bonChemin);
+        }
     }
 
 
