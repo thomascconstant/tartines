@@ -10,6 +10,8 @@ public class Path {
     Segment lastSortieDown = null;
     Segment lastSortieUp = null;
 
+   
+
     List<LineDrawer> PathView = new List<LineDrawer>();
 
     public List<List<Segment>> PathSegments = new List<List<Segment>>();
@@ -102,15 +104,15 @@ public class Path {
 
         List<Segment> cheminTemp = new List<Segment>();
         AddSegment(cheminTemp, segmentsList[0]);
-
+ 
         Debug.Log(PathSegments.Count);
     }
 
-    void AddLine(Segment s1, Segment s2, Color col, float epaisseur)
+    void AddLine(Segment s1, Segment s2, Color col, float epaisseur, float diff)
     {
         LineDrawer l = new LineDrawer(epaisseur);
 
-        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, col, s1, s2);
+        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, col, s1, s2, diff);
         PathView.Add(l);
     }
     public void DrawPath(Chunk c)
@@ -120,21 +122,15 @@ public class Path {
         float epaisseur = 0.1f;
         foreach (List<Segment> chemin in PathSegments)
         {
+            
             col = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
             for (int j = 0; j < chemin.Count -1; j++)
             {
 
+                chemin[j].difficulte = ParamDiff.CalculDiff(chemin[j]);
                 if (chemin[j + 1] != null)
                 {
-                    AddLine(chemin[j], chemin[j + 1], col, epaisseur);
-                }
-                if (chemin[j + 1] != null)
-                {
-                    AddLine(chemin[j], chemin[j + 1], col, epaisseur);
-                }
-                if (chemin[j + 1] != null)
-                {
-                    AddLine(chemin[j], chemin[j + 1], col, epaisseur);
+                    AddLine(chemin[j], chemin[j + 1], col, epaisseur, 0);
                 }
             }
             epaisseur += 0.1f;
@@ -172,6 +168,7 @@ public class Path {
             chemin.Add(seg);
             List<Segment> bonChemin = new List<Segment>(chemin);
             chemin.Clear();
+            CalculParam(bonChemin);
             PathSegments.Add(bonChemin);
         }
     }
@@ -181,7 +178,7 @@ public class Path {
         for (int i = 0; i < chemin.Count - 1; i++)
         {
             chemin[i].distanceObs = Mathf.Abs(chemin[i].p1.x - chemin[i + 1].p1.x);
-            chemin[i].distanceAParcourir = Mathf.Abs(chemin[i].p1.y - chemin[i + 1].p1.y);
+            chemin[i].distanceAParcourir = Mathf.Abs(chemin[i].milieu.y - chemin[i + 1].milieu.y);
         }
     }
 

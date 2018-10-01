@@ -14,6 +14,7 @@ public class Segment
     public float taille;
     public float distanceObs;
     public float distanceAParcourir;
+    public float difficulte;
 
     public enum HauteurSegment
     {

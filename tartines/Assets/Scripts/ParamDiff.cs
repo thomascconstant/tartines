@@ -16,20 +16,20 @@ public class ParamDiff {
         float temps = s.distanceObs / cameraRunnerScript.vitesse;
 
         //le paramètre de taille du segment (compris entre 0, impossible, et 1, trop facile) est multiplié par le paramètre liant temps et hauteur => l*(h/t)
-        float diff = s.taille * (s.distanceAParcourir / temps);
+        float diff = (1/s.taille) * (s.distanceAParcourir / temps);
 
         return diff;  
 
     }
 
-    public static float CalculDiffChunk(Chunk c)
+    public static float CalculDiffChemin(List<Segment> seg)
     {
-        float diffChunk = 0;
-        foreach(Segment s in c.segments)
+        float diffChemin = 0;
+        foreach(Segment s in seg)
         {
-            diffChunk += CalculDiff(s);
+            diffChemin += CalculDiff(s);
         }
-        return diffChunk;
+        return diffChemin;
     }
 
 

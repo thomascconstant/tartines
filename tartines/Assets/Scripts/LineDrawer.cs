@@ -39,22 +39,22 @@ public class LineDrawer
     }
 
     //Draws lines through the provided vertices
-    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, Segment s1 = null, Segment s2 = null)
+    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, Segment s1 = null, Segment s2 = null, float diff = 0)
     {
         if (lineRenderer == null)
         {
             init(0.2f);
         }
-
-        //float diff = ParamDiff.CalculDiff(seg);
+        
 
         if (s1 != null)
         {
             Text Diff = lineObj.AddComponent<Text>();
-            Diff.text = "Pour le segment 1: \nLe milieu est:" + s1.milieu + "\nLa distance à parcourir est:" + s1.distanceAParcourir +
-                "\nLa distance à l'obstacle est:" + s1.distanceObs + "\nLa taille du segment est:" + s1.taille +
-                "\n\nPour le segment 2: \nLe milieu est:" + s2.milieu + "\nLa distance à parcourir est:" + s2.distanceAParcourir +
-                "\nLa distance à l'obstacle est:" + s2.distanceObs + "\nLa taille du segment est:" + s2.taille; 
+            Diff.text = "Pour le segment 1: \nLe milieu est:" + s1.milieu + "\nLa taille du segment est:" + s1.taille  + "\nLa distance à parcourir est:" 
+                + s1.distanceAParcourir + "\nLa distance à l'obstacle est:" + s1.distanceObs +
+                "\n\nPour le segment 2: \nLe milieu est:" + s2.milieu + "\nLa taille du segment est:" + s2.taille +
+                "\n\nLa difficulté de ce segment est:" + s1.difficulte + 
+                "\n\nLa difficulté du chemin est:" + diff; 
         }
 
         //Set color
