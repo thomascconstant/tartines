@@ -106,33 +106,39 @@ public class Path {
         Debug.Log(PathSegments.Count);
     }
 
-    void AddLine(Segment s1, Segment s2)
+    void AddLine(Segment s1, Segment s2, Color col, float epaisseur)
     {
-        LineDrawer l = new LineDrawer();
+        LineDrawer l = new LineDrawer(epaisseur);
 
-        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, Color.red, s1, s2);
+        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, col, s1, s2);
         PathView.Add(l);
     }
     public void DrawPath(Chunk c)
     {
         PathView.Clear();
-        foreach(Segment s in c.segments)
+        Color col = new Color();
+        float epaisseur = 0.1f;
+        foreach (List<Segment> chemin in PathSegments)
         {
-            
-            if (s.nextUp != null)
+            col = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+            for (int j = 0; j < chemin.Count -1; j++)
             {
-                AddLine(s, s.nextUp);
-            }
-            if (s.nextDown != null)
-            {
-                AddLine(s, s.nextDown);
-            }
-            if (s.nextMilieu != null)
-            {
-                AddLine(s, s.nextMilieu);
-            }
-        }
 
+                if (chemin[j + 1] != null)
+                {
+                    AddLine(chemin[j], chemin[j + 1], col, epaisseur);
+                }
+                if (chemin[j + 1] != null)
+                {
+                    AddLine(chemin[j], chemin[j + 1], col, epaisseur);
+                }
+                if (chemin[j + 1] != null)
+                {
+                    AddLine(chemin[j], chemin[j + 1], col, epaisseur);
+                }
+            }
+            epaisseur += 0.1f;
+        }
     }
 
     public void AddSegment(List<Segment> chemin, Segment seg)
