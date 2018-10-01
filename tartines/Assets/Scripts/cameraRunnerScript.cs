@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class cameraRunnerScript : MonoBehaviour {
 
-    public float vitesse = 10;
+    public static float vitesse = 10;
 
     // Update is called once per frame
     void Update () {

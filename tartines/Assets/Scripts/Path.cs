@@ -101,24 +101,8 @@ public class Path {
         }
 
         List<Segment> cheminTemp = new List<Segment>();
-        // Creation des chemins
-        //for (int i = 0; i < segmentsList.Count; i++)
-       // {
-            /*if (segmentsList[i].nextUp != null)
-                Debug.Log("\nUP Segment depart:" + segmentsList[i].milieu + "\nSegment arrivée:" + segmentsList[i].nextUp.milieu);
-            if (segmentsList[i].nextDown != null)
-                Debug.Log("\nDOWN Segment depart:" + segmentsList[i].milieu + "\nSegment arrivée:" + segmentsList[i].nextDown.milieu);
-            if (segmentsList[i].nextMilieu != null)
-                Debug.Log("\nMILIEU Segment depart:" + segmentsList[i].milieu + "\nSegment arrivée:" + segmentsList[i].nextMilieu.milieu);
-            if (segmentsList[i].nextMilieu == null && segmentsList[i].nextDown == null && segmentsList[i].nextUp == null)
-                Debug.Log("\nJe n'ai pas de next! " + segmentsList[i].milieu);*/
-           // if (segmentsList[i].nextUp != null || segmentsList[i].nextDown != null)
-           // {
-                AddSegment(cheminTemp, segmentsList[0]);
-           // }
+        AddSegment(cheminTemp, segmentsList[0]);
 
-
-       // }
         Debug.Log(PathSegments.Count);
     }
 
@@ -160,11 +144,7 @@ public class Path {
             List<Segment> cheminBis = new List<Segment>(chemin);
             AddSegment(cheminBis, seg.nextUp);
             AddSegment(chemin, seg.nextDown);
-            /*float rand = Random.Range(0, 2);
-            if (rand < 0.5f)
-                AddSegment(chemin, seg.nextDown);
-            else
-                AddSegment(chemin, seg.nextUp);*/
+           
         }
         else if (seg.nextUp != null)
         {
@@ -190,5 +170,13 @@ public class Path {
         }
     }
 
+    private void CalculParam(List<Segment> chemin)
+    {
+        for (int i = 0; i < chemin.Count - 1; i++)
+        {
+            chemin[i].distanceObs = Mathf.Abs(chemin[i].p1.x - chemin[i + 1].p1.x);
+            chemin[i].distanceAParcourir = Mathf.Abs(chemin[i].p1.y - chemin[i + 1].p1.y);
+        }
+    }
 
 }
