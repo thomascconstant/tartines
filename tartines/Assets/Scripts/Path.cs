@@ -120,20 +120,28 @@ public class Path {
         PathView.Clear();
         Color col = new Color();
         float epaisseur = 0.1f;
+        float diffChemin = 0;
         foreach (List<Segment> chemin in PathSegments)
         {
-            
+            CalculParam(chemin);
+            for (int j = 0; j < chemin.Count - 1; j++)
+            {
+                chemin[j].difficulte = ParamDiff.CalculDiff(chemin[j]);
+            }
+                
+
             col = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
             for (int j = 0; j < chemin.Count -1; j++)
             {
-
-                chemin[j].difficulte = ParamDiff.CalculDiff(chemin[j]);
+                diffChemin += chemin[j].difficulte;
                 if (chemin[j + 1] != null)
                 {
-                    AddLine(chemin[j], chemin[j + 1], col, epaisseur, 0);
+                    AddLine(chemin[j], chemin[j + 1], col, epaisseur, diffChemin);
                 }
             }
             epaisseur += 0.1f;
+            diffChemin = 0;
+
         }
     }
 
@@ -166,10 +174,12 @@ public class Path {
         else
         {
             chemin.Add(seg);
-            List<Segment> bonChemin = new List<Segment>(chemin);
+            List<Segment> bonChemin;
+            
+            //CalculParam(bonChemin);
+            PathSegments.Add(bonChemin = new List<Segment>(chemin));
             chemin.Clear();
-            CalculParam(bonChemin);
-            PathSegments.Add(bonChemin);
+            // bonChemin.Clear();
         }
     }
 
