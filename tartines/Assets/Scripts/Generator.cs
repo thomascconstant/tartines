@@ -13,13 +13,13 @@ public class Generator : MonoBehaviour {
         chunks[0] = new Chunk();
         chunks[0].CreateChunk();
         chunks[0].BuildSegments();
-        chunks[0].ShowSegments();
+        //chunks[0].ShowSegments();
         for (int i = 1; i < chunks.Length; i++)
         {
-            chunks[1] = new Chunk();
-            chunks[1].GenerateChunk(chunks[i-1].segments[chunks[i - 1].segments.Count - 1].p2, chunks[i - 1].segments[chunks[i - 1].segments.Count - 1].p1);
+            chunks[i] = new Chunk();
+            chunks[i].GenerateChunk(chunks[i-1].segments[chunks[i - 1].segments.Count - 1].p2, chunks[i - 1].segments[chunks[i - 1].segments.Count - 1].p1);
             chunks[i].BuildSegments();
-            chunks[i].ShowSegments();
+            //chunks[i].ShowSegments();
 
         }
 

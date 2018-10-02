@@ -18,12 +18,23 @@ public class Obstacle {
 
     }
 
-    public HauteurObstacle hauteur = HauteurObstacle.OBS_NONE;
+    public enum TypeObstacle
+    {
+        OBS_TRIANGLE,
+        OBS_RECTANGLE,
+        OBS_LIGNE,
+        OBS_NONE
+
+    }
+
+    public HauteurObstacle hauteur = HauteurObstacle.OBS_MILIEU;
+    public TypeObstacle typeObstacle = TypeObstacle.OBS_NONE;
 
 
-    public Obstacle(HauteurObstacle h)
+    public Obstacle(HauteurObstacle h, TypeObstacle t)
     {
         hauteur = h;
+        typeObstacle = t;
     }
 
 
@@ -36,12 +47,15 @@ public class Obstacle {
             return;
         }
 
+       
         segments = new LineDrawer[sommets.Length];
+
+        if (sommets.Length > 2)
         for (int i = 1; i < segments.Length; i++)
-        {
-            segments[i - 1] = new LineDrawer();
-            segments[i - 1].DrawLineInGameView(sommets[i - 1], sommets[i], mycolor);
-        }
+            {
+                segments[i - 1] = new LineDrawer();
+                segments[i - 1].DrawLineInGameView(sommets[i - 1], sommets[i], mycolor);
+            }
         segments[segments.Length - 1] = new LineDrawer();
         segments[segments.Length - 1].DrawLineInGameView(sommets[sommets.Length - 1], sommets[0], mycolor);
     }

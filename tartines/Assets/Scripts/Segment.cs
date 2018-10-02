@@ -21,14 +21,14 @@ public class Segment
         SEG_HAUT,
         SEG_MILIEU,
         SEG_BAS,
-        SEG_NONE,
+        SEG_NONE
     }
 
     public enum CoteSegment
     {
         SEG_ENTREE,
         SEG_SORTIE,
-        SEG_NONE,
+        SEG_NONE
 
     }
 
