@@ -8,12 +8,15 @@ public class LineDrawer
     private LineRenderer lineRenderer;
     private float lineSize;
     private GameObject lineObj;
+    BoxCollider2D box = new BoxCollider2D();
+    public PhysicsMaterial2D material = (PhysicsMaterial2D)Resources.Load<PhysicsMaterial2D>("Slippery");
 
 
     public LineDrawer(float lineSize = 0.2f)
     {
         lineObj = new GameObject("LineObj");
         lineRenderer = lineObj.AddComponent<LineRenderer>();
+        
         //Particles/Additive
         lineRenderer.material = new Material(Shader.Find("Hidden/Internal-Colored"));
 
@@ -71,6 +74,42 @@ public class LineDrawer
         //Set the postion of both two lines
         lineRenderer.SetPosition(0, start);
         lineRenderer.SetPosition(1, end);
+
+        //ajout d'un collider sur le linerenderer
+        BoxCollider2D box = lineObj.AddComponent<BoxCollider2D>();
+        box.sharedMaterial = material;
+        //box.transform.parent = lineRenderer.transform;
+
+        //taille du collider
+        float lineWidth = lineRenderer.endWidth;
+        float lineLength = Vector3.Distance(start, end);
+        if (end.x == start.x)
+            box.size = new Vector2(lineWidth, lineLength);
+        else
+            box.size = new Vector2(lineLength, lineWidth);
+
+
+        //rotation du collider
+        if (start.x != end.x && start.y != end.y)
+        {
+            Vector3 midPoint = (start + end) / 2.0f;
+            
+            
+
+            float rad = Mathf.Atan2((end.y - start.y), (end.x - start.x));
+            float angle = rad * Mathf.Rad2Deg;
+            //angle *= -1;
+            box.transform.Rotate(0, 0, angle);
+
+            lineObj.transform.position = midPoint;
+            box.transform.position = new Vector3(0, 0, 0);
+
+
+
+
+        }
+
+
     }
 
     public void Destroy()
