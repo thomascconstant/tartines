@@ -20,6 +20,7 @@ public class Obstacle {
 
     public HauteurObstacle hauteur = HauteurObstacle.OBS_NONE;
 
+
     public Obstacle(HauteurObstacle h)
     {
         hauteur = h;
@@ -45,6 +46,13 @@ public class Obstacle {
         segments[segments.Length - 1].DrawLineInGameView(sommets[sommets.Length - 1], sommets[0], mycolor);
     }
 
+    public void CreateBord(Vector3 p1, Vector3 p2)
+    {
+        sommets = new Vector3[2];
+        sommets[0] = p1;
+        sommets[1] = p2;
+    }
+
     public void CreateTriangle(Vector3 p1, Vector3 p2, Vector3 p3)
     {
         sommets = new Vector3[3];
@@ -52,6 +60,7 @@ public class Obstacle {
         sommets[1] = p2;
         sommets[2] = p3;
     }
+
 
     public void CreateRectangle(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4)
     {
