@@ -44,6 +44,11 @@ public class LineDrawer
     //Draws lines through the provided vertices
     public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, Segment s1 = null, Segment s2 = null, float diff = 0)
     {
+
+        Vector3 midPoint = (start + end) / 2.0f;
+
+        lineObj.transform.position = midPoint;
+
         if (lineRenderer == null)
         {
             init(0.2f);
@@ -92,21 +97,13 @@ public class LineDrawer
         //rotation du collider
         if (start.x != end.x && start.y != end.y)
         {
-            Vector3 midPoint = (start + end) / 2.0f;
             
-            
-
             float rad = Mathf.Atan2((end.y - start.y), (end.x - start.x));
             float angle = rad * Mathf.Rad2Deg;
             //angle *= -1;
             box.transform.Rotate(0, 0, angle);
-
-            lineObj.transform.position = midPoint;
-            box.transform.position = new Vector3(0, 0, 0);
-
-
-
-
+            
+            
         }
 
 
