@@ -14,6 +14,7 @@ public class LineDrawer
     {
         lineObj = new GameObject("LineObj");
         lineRenderer = lineObj.AddComponent<LineRenderer>();
+        Collider2D collider = lineObj.AddComponent<Collider2D>();
         //Particles/Additive
         lineRenderer.material = new Material(Shader.Find("Hidden/Internal-Colored"));
 

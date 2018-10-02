@@ -35,6 +35,22 @@ public class Segment
     public HauteurSegment hauteur;
     public CoteSegment cote;
 
+    public Segment(Segment s)
+    {
+       p1 = s.p1;
+       p2 = s.p2;
+       l = s.l;
+       nextUp = s.nextUp;
+       nextDown = s.nextDown;
+       nextMilieu = s.nextMilieu;
+       milieu = s.milieu;
+       taille = s.taille;
+       distanceObs = s.distanceObs;
+       distanceAParcourir = s.distanceAParcourir;
+       difficulte = s.difficulte;
+    }
+
+
     public Segment(HauteurSegment h, CoteSegment c)
     {
         hauteur = h;

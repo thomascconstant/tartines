@@ -16,9 +16,9 @@ public class ParamDiff {
         float temps = s.distanceObs / cameraRunnerScript.vitesse;
 
         //le paramètre de taille du segment (compris entre 0, impossible, et 1, trop facile) est multiplié par le paramètre liant temps et hauteur => l*(h/t)
-        float diff = (1/s.taille) * (s.distanceAParcourir / temps);
+        s.difficulte = (1/s.taille) * (s.distanceAParcourir / temps);
 
-        return diff;  
+        return s.difficulte;  
 
     }
 
