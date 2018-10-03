@@ -82,7 +82,6 @@ public class LineDrawer
         lineRenderer.SetPosition(1, end);
 
         //ajout d'un collider sur le linerenderer
-        //Rigidbody2D boxRigid = lineObj.AddComponent<Rigidbody2D>();
         BoxCollider2D box = lineObj.AddComponent<BoxCollider2D>();
         box.sharedMaterial = material;
         //box.transform.parent = lineRenderer.transform;
@@ -95,7 +94,6 @@ public class LineDrawer
         else
             box.size = new Vector2(lineLength, lineWidth);
 
-
         //rotation du collider
         if (start.x != end.x && start.y != end.y)
         {
@@ -104,10 +102,11 @@ public class LineDrawer
             float angle = rad * Mathf.Rad2Deg;
             //angle *= -1;
             box.transform.Rotate(0, 0, angle);
-            
-            
+
         }
 
+        //add rigidbody
+        //Rigidbody2D boxRigid = lineObj.AddComponent<Rigidbody2D>();
 
     }
 
