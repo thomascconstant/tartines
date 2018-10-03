@@ -10,9 +10,8 @@ public class Path {
     Segment lastSortieDown = null;
     Segment lastSortieUp = null;
 
-   
-
     List<LineDrawer> PathView = new List<LineDrawer>();
+
 
     public List<List<Segment>> PathSegments = new List<List<Segment>>();
 
@@ -112,6 +111,7 @@ public class Path {
 
         l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, col, s1, s2, diff);
         PathView.Add(l);
+
     }
     public void DrawPath(Chunk c)
     {
