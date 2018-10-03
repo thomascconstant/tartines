@@ -202,6 +202,10 @@ public class Path {
                 chemin.Add(seg);
                 AddSegment(chemin, seg.nextMilieu);
             }
+            else if (Mathf.Abs(seg.p1.x - seg.nextMilieu.p1.x) < 0.5)
+            {
+                AddSegment(chemin, seg.nextMilieu);
+            }
             else
             {
                 chemin.Add(seg);
