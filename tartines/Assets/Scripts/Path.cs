@@ -104,9 +104,7 @@ public class Path {
 
         List<Segment> cheminTemp = new List<Segment>();
         AddSegment(cheminTemp, segmentsList[0]);
- 
-        Debug.Log(PathSegments.Count);
-    }
+     }
 
     void AddLine(Segment s1, Segment s2, Color col, float epaisseur, float diff)
     {
@@ -145,6 +143,15 @@ public class Path {
         }
     }
 
+    public void AddSegmentChunks(List<Chunk> listChunk)
+    {
+        foreach (Chunk c in listChunk)
+        {
+            List<Segment> chemin = new List<Segment>();
+
+        }
+    }
+
     public void AddSegment(List<Segment> chemin, Segment seg)
     {
         if (seg.nextUp != null && seg.nextDown != null)
@@ -160,16 +167,46 @@ public class Path {
         {
             chemin.Add(seg);
             AddSegment(chemin, seg.nextUp);
+
         }
         else if (seg.nextDown != null)
         {
+            
             chemin.Add(seg);
             AddSegment(chemin, seg.nextDown);
+
         }
         else if (seg.nextMilieu != null)
         {
-            chemin.Add(seg);
-            AddSegment(chemin, seg.nextMilieu);
+
+            if (seg.nextMilieu.nextUp != null && seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextUp.p1.x) < 0.5 && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextDown.p1.x) < 0.5)
+            {
+                chemin.Add(seg);
+                List<Segment> cheminSec = new List<Segment>(chemin);
+                AddSegment(cheminSec, seg.nextMilieu.nextUp);
+                AddSegment(chemin, seg.nextMilieu.nextDown);
+            }
+
+            else if (seg.nextMilieu.nextUp != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextUp.p1.x) < 0.5)
+            {
+                chemin.Add(seg);
+                AddSegment(chemin, seg.nextMilieu.nextUp);
+            }
+            else if (seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextDown.p1.x) < 0.5)
+            {
+                chemin.Add(seg);
+                AddSegment(chemin, seg.nextMilieu.nextDown);
+            }
+            else if (seg.nextMilieu.nextMilieu != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextMilieu.p1.x) < 0.5)
+            {
+                chemin.Add(seg);
+                AddSegment(chemin, seg.nextMilieu);
+            }
+            else
+            {
+                chemin.Add(seg);
+                AddSegment(chemin, seg.nextMilieu);
+            }
         }
         else
         {
