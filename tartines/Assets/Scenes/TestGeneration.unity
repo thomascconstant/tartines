@@ -218,41 +218,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 61154808482809184, guid: 4b659295a567aab4fb438cc8be3f3825,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 61154808482809184, guid: 4b659295a567aab4fb438cc8be3f3825,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 61154808482809184, guid: 4b659295a567aab4fb438cc8be3f3825,
-        type: 2}
-      propertyPath: m_Size.y
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 50461567294300592, guid: 4b659295a567aab4fb438cc8be3f3825,
-        type: 2}
-      propertyPath: m_BodyType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 50461567294300592, guid: 4b659295a567aab4fb438cc8be3f3825,
-        type: 2}
-      propertyPath: m_CollisionDetection
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 50461567294300592, guid: 4b659295a567aab4fb438cc8be3f3825,
-        type: 2}
-      propertyPath: m_SleepingMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 50461567294300592, guid: 4b659295a567aab4fb438cc8be3f3825,
-        type: 2}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b659295a567aab4fb438cc8be3f3825, type: 2}
   m_IsPrefabAsset: 0

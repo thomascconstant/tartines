@@ -9,6 +9,7 @@ public class LineDrawer
     private float lineSize;
     private GameObject lineObj;
     public BoxCollider2D box = new BoxCollider2D();
+    public Rigidbody2D boxRigid = new Rigidbody2D();
     public PhysicsMaterial2D material = (PhysicsMaterial2D)Resources.Load<PhysicsMaterial2D>("Slippery");
 
 
@@ -81,8 +82,8 @@ public class LineDrawer
         lineRenderer.SetPosition(1, end);
 
         //ajout d'un collider sur le linerenderer
+        //Rigidbody2D boxRigid = lineObj.AddComponent<Rigidbody2D>();
         BoxCollider2D box = lineObj.AddComponent<BoxCollider2D>();
-        box.isTrigger = true;
         box.sharedMaterial = material;
         //box.transform.parent = lineRenderer.transform;
 
