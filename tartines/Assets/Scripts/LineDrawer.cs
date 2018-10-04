@@ -16,6 +16,7 @@ public class LineDrawer
     public LineDrawer(float lineSize = 0.2f)
     {
         lineObj = new GameObject("LineObj");
+        lineObj.tag = "Collider";
         lineRenderer = lineObj.AddComponent<LineRenderer>();
         
         //Particles/Additive
@@ -34,6 +35,7 @@ public class LineDrawer
         if (lineRenderer == null)
         {
             GameObject lineObj = new GameObject("LineObj");
+            lineObj.tag = "Collider";
             lineRenderer = lineObj.AddComponent<LineRenderer>();
             //Particles/Additive
             lineRenderer.material = new Material(Shader.Find("Hidden/Internal-Colored"));
