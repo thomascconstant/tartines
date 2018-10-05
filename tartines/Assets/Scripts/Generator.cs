@@ -10,18 +10,28 @@ public class Generator : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        nb_chunks = 10;
-        chunks.Add(new Chunk());
-        chunks[0].CreateChunk();
-        chunks[0].BuildSegments();
-        for (int i = 1; i < nb_chunks; i++)
+        nb_chunks = 20;
+        Vector3 p1 = new Vector3(0,15,0);
+        Vector3 p2 = new Vector3(0,5, 0);
+       
+        for (int i = 0; i < nb_chunks; i++)
         {
             chunks.Add(new Chunk());
+
+            if (i >= 1)
+            {
+                p1 = chunks[i - 1].segments[chunks[i - 1].segments.Count - 1].p2;
+                p2 = chunks[i - 1].segments[chunks[i - 1].segments.Count - 1].p1;
+            }
+
+            
             for (int t = 0; t < 100; t++)
             {
-                chunks[i].GenerateChunk(chunks[i - 1].segments[chunks[i - 1].segments.Count - 1].p2, chunks[i - 1].segments[chunks[i - 1].segments.Count - 1].p1);
+                chunks[i].GenerateChunk(p1, p2);
                 chunks[i].BuildSegments();
             }
+
+            
         }
 
         foreach(Chunk c in chunks)
