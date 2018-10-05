@@ -10,11 +10,13 @@ public class Chunk
 
     public List<Segment> segments = new List<Segment>();
 
-    public float hauteurMin = 6f;
-    public float hauteurMax = 14f;
+    public float hauteurMin = 1f;
+    public float hauteurMax = 5f;
 
-    public float largeurMin = 0f;
-    public float largeurMax = 20f;
+    public float largeurMin = 0.1f;
+    public float largeurMax = 0.7f;
+
+    public float hauteurPerso = 1.5f;
 
     // On crée tout les obstacles en position positive
     public void CreateChunk()
@@ -296,24 +298,39 @@ public class Chunk
 
     // p1 = point du haut du chunk precedant
     // p2 = point du bas du chunk precedant
-    public void GenerateChunk(Vector3 p1, Vector3 p2)
+    public void GenerateChunk(Vector3 p1, Vector3 p2, float largeurChunk = 20)
     {
+
+        largeurChunk = Random.Range(5, largeurChunk);
+
         obstacles = new Obstacle[3];
 
-        float x1 = Random.Range(largeurMin + 1.3f, largeurMax - 1.3f);
-        float x2 = Random.Range(largeurMin + 1.3f, largeurMax - 1.3f);
-        while (x2 < x1)
-            x2 = Random.Range(largeurMin + 1.3f, largeurMax - 1.3f);
+        float hauteurChunk = Mathf.Abs(p2.y - p1.y);
+
+        float largeur =  Random.Range(largeurMin* largeurChunk, largeurMax* largeurChunk - (2*hauteurPerso));
+        float x1 = Random.Range(hauteurPerso, largeurChunk - largeur - hauteurPerso);
+        float x2 = x1 + largeur;
+
+        float hauteur = Mathf.Min(hauteurChunk - (2* hauteurPerso), Random.Range(hauteurMin, hauteurMax));
+        float y1 = Random.Range(hauteurPerso + hauteur, hauteurChunk - hauteurPerso);
+        float y2 = y1 - hauteur;
+
+
+
+        /*
+        float x1 = Random.Range(largeurMin, largeurMax - 1);
+        float x2 = Random.Range(largeurMin, largeurMax - 1);
+    
+    
 
         float y1 = Random.Range(hauteurMin, hauteurMax);
         float y2 = Random.Range(hauteurMin, hauteurMax);
-        while (y2 > y1)
-            y2 = Random.Range(hauteurMin, hauteurMax);
+        */
 
         obstacles[0] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU, Obstacle.TypeObstacle.OBS_RECTANGLE);
-        Vector3 point1 = new Vector3(x1 + p1.x, y1, 0);
+        Vector3 point1 = new Vector3(x1 + p1.x, p2.y+y1, 0);
         Vector3 point2 = new Vector3(x2 + p1.x, point1.y, 0);
-        Vector3 point3 = new Vector3(point2.x, y2, 0);
+        Vector3 point3 = new Vector3(point2.x, p2.y + y2, 0);
         Vector3 point4 = new Vector3(point1.x, point3.y, 0);
         obstacles[0].CreateRectangle(point1, point2, point3, point4);
 
@@ -329,16 +346,16 @@ public class Chunk
 
         obstacles[1] = new Obstacle(Obstacle.HauteurObstacle.OBS_HAUT, Obstacle.TypeObstacle.OBS_TRIANGLE);
         point1 = new Vector3(p1.x, p1.y, 0);
-        point2 = new Vector3(p1.x + largeurMax, p1.y, 0);
-        point3 = new Vector3(Random.Range(p1.x + 1, p1.x + largeurMax - 1), Random.Range(obstacles[0].sommets[0].y + 1, hauteurMax), 0);
+        point2 = new Vector3(p1.x + largeurChunk, p1.y, 0);
+        point3 = new Vector3(Random.Range(p1.x + 1, p1.x + largeurChunk - 1), p2.y + Random.Range(y1+ hauteurPerso, hauteurChunk), 0);
         obstacles[1].CreateTriangle(point1, point2, point3);                                             
        /// obstacles[1].DrawSegment();
 
 
         obstacles[2] = new Obstacle(Obstacle.HauteurObstacle.OBS_BAS, Obstacle.TypeObstacle.OBS_TRIANGLE);
         point1 = new Vector3(p2.x, p2.y, 0);
-        point2 = new Vector3(p2.x + largeurMax, p2.y, 0);
-        point3 = new Vector3(Random.Range(p2.x + 1, p2.x + largeurMax - 1), Random.Range(hauteurMin, obstacles[0].sommets[3].y - 1), 0);
+        point2 = new Vector3(p2.x + largeurChunk, p2.y, 0);
+        point3 = new Vector3(Random.Range(p2.x + 1, p2.x + largeurChunk - 1), p2.y + Random.Range(0, y2 - hauteurPerso), 0);
         obstacles[2].CreateTriangle(point1, point2, point3);
         //obstacles[2].DrawSegment();
 

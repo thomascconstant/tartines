@@ -52,12 +52,12 @@ public class Obstacle {
 
         if (sommets.Length > 2)
         for (int i = 1; i < segments.Length; i++)
-            {
-                segments[i - 1] = new LineDrawer();
-                segments[i - 1].DrawLineInGameView(sommets[i - 1], sommets[i], mycolor);
-            }
+        {
+            segments[i - 1] = new LineDrawer();
+            segments[i - 1].DrawLineInGameView(sommets[i - 1], sommets[i], mycolor,true);
+        }
         segments[segments.Length - 1] = new LineDrawer();
-        segments[segments.Length - 1].DrawLineInGameView(sommets[sommets.Length - 1], sommets[0], mycolor);
+        segments[segments.Length - 1].DrawLineInGameView(sommets[sommets.Length - 1], sommets[0], mycolor, true);
 
         //on met le efface tout
         foreach(LineDrawer l in segments)

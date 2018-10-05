@@ -45,7 +45,7 @@ public class LineDrawer
     }
 
     //Draws lines through the provided vertices
-    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, Segment s1 = null, Segment s2 = null, float diff = 0)
+    public void DrawLineInGameView(Vector3 start, Vector3 end, Color color, bool bCollide = false, Segment s1 = null, Segment s2 = null, float diff = 0)
     {
 
         Vector3 midPoint = (start + end) / 2.0f;
@@ -84,31 +84,38 @@ public class LineDrawer
         lineRenderer.SetPosition(1, end);
 
         //ajout d'un collider sur le linerenderer
-        BoxCollider2D box = lineObj.AddComponent<BoxCollider2D>();
-        box.sharedMaterial = material;
-        //box.transform.parent = lineRenderer.transform;
-
-        //taille du collider
-        float lineWidth = lineRenderer.endWidth;
-        float lineLength = Vector3.Distance(start, end);
-        if (end.x == start.x)
-            box.size = new Vector2(lineWidth, lineLength);
-        else
-            box.size = new Vector2(lineLength, lineWidth);
-
-        //rotation du collider
-        if (start.x != end.x && start.y != end.y)
+        BoxCollider2D bOld = lineObj.GetComponent<BoxCollider2D>();
+        if (bOld)
+            GameObject.Destroy(bOld);
+        if(bCollide)
         {
-            
-            float rad = Mathf.Atan2((end.y - start.y), (end.x - start.x));
-            float angle = rad * Mathf.Rad2Deg;
-            //angle *= -1;
-            box.transform.Rotate(0, 0, angle);
+            BoxCollider2D box = lineObj.AddComponent<BoxCollider2D>();
+            box.sharedMaterial = material;
+            //box.transform.parent = lineRenderer.transform;
 
+            //taille du collider
+            float lineWidth = lineRenderer.endWidth;
+            float lineLength = Vector3.Distance(start, end);
+            if (end.x == start.x)
+                box.size = new Vector2(lineWidth, lineLength);
+            else
+                box.size = new Vector2(lineLength, lineWidth);
+
+            //rotation du collider
+            if (start.x != end.x && start.y != end.y)
+            {
+
+                float rad = Mathf.Atan2((end.y - start.y), (end.x - start.x));
+                float angle = rad * Mathf.Rad2Deg;
+                //angle *= -1;
+                box.transform.Rotate(0, 0, angle);
+
+            }
+
+            //add rigidbody
+            //Rigidbody2D boxRigid = lineObj.AddComponent<Rigidbody2D>();
         }
 
-        //add rigidbody
-        //Rigidbody2D boxRigid = lineObj.AddComponent<Rigidbody2D>();
 
     }
 

@@ -26,7 +26,7 @@ public class Generator : MonoBehaviour {
 
         foreach(Chunk c in chunks)
         {
-            //c.ShowPath();
+            c.ShowPath();
             c.ShowObstacles();
 
         }

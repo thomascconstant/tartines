@@ -110,7 +110,7 @@ public class Path {
     {
         LineDrawer l = new LineDrawer(epaisseur);
 
-        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, col, s1, s2, diff);
+        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, col, false, s1, s2, diff);
         PathView.Add(l);
 
     }
