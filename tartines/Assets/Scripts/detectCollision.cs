@@ -57,11 +57,11 @@ public class detectCollision: MonoBehaviour {
                         y1 = y2;
                         y2 = yTemp;
                     }
-                    Debug.DrawLine(Vector3.Lerp(s1, s2, 0), Vector3.Lerp(s1, s2, 1), Color.red, 5f, false);
+                   // Debug.DrawLine(Vector3.Lerp(s1, s2, 0.1f), Vector3.Lerp(s1, s2, 0.9f), Color.red, 5f, false);
                     
                     if (x1 < this.transform.position.x && x2 > this.transform.position.x)
                     {
-                        Debug.DrawLine(this.transform.position, Vector3.Lerp(s1, s2, 1-(this.transform.position.x % c.largeurMax )/ c.largeurMax ), Color.blue, 5f, false);
+                       // Debug.DrawLine(this.transform.position, Vector3.Lerp(s1, s2, (this.transform.position.x % c.largeurMax )/ c.largeurMax ), Color.blue, 5f, false);
 
                         if (this.transform.position.y < Mathf.Lerp(y1, y2, 1 - (this.transform.position.x % c.largeurMax) / (x2 % c.largeurMax)) &&
                             this.transform.position.y > Mathf.Lerp(y1, y2, 1 - (this.transform.position.x % c.largeurMax) / (x2 % c.largeurMax)))

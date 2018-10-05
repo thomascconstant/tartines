@@ -28,7 +28,7 @@ public class Chunk
         Vector3 p3 = new Vector3(13, 12, 0);
 
         obstacles[0].CreateTriangle(p1, p2, p3);
-        obstacles[0].DrawSegment();
+        //obstacles[0].DrawSegment();
 
         obstacles[1] = new Obstacle(Obstacle.HauteurObstacle.OBS_BAS, Obstacle.TypeObstacle.OBS_TRIANGLE);
 
@@ -38,7 +38,7 @@ public class Chunk
 
 
         obstacles[1].CreateTriangle(p1, p2, p3);
-        obstacles[1].DrawSegment();
+        //obstacles[1].DrawSegment();
 
         obstacles[2] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU, Obstacle.TypeObstacle.OBS_RECTANGLE);
 
@@ -49,7 +49,7 @@ public class Chunk
 
 
         obstacles[2].CreateRectangle(p1, p2, p3, p4);
-        obstacles[2].DrawSegment();
+        //obstacles[2].DrawSegment();
 
         Vector3 t = new Vector3(-6, -1, 0);
 
@@ -61,7 +61,7 @@ public class Chunk
         obstacles[3] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU, Obstacle.TypeObstacle.OBS_RECTANGLE);
 
         obstacles[3].CreateRectangle(p1, p2, p3, p4);
-        obstacles[3].DrawSegment();
+       //obstacles[3].DrawSegment();
 
     }
 
@@ -272,12 +272,12 @@ public class Chunk
 
         }
 
-        p.CreerChemin(this);
+        p.CreerChemins(this);
         //segments.RemoveAll(s2 => s2.IsSame(segments[i]));
 
     }
 
-    public void ShowSegments()
+    public void ShowPath()
     {
         foreach (Segment s in segments)
         {
@@ -285,16 +285,25 @@ public class Chunk
         }
         p.DrawPath(this);
     }
+
+    public void ShowObstacles()
+    {
+        foreach (Obstacle o in obstacles)
+        {
+            o.DrawSegment();
+        }
+    }
+
     // p1 = point du haut du chunk precedant
     // p2 = point du bas du chunk precedant
     public void GenerateChunk(Vector3 p1, Vector3 p2)
     {
         obstacles = new Obstacle[3];
 
-        float x1 = Random.Range(largeurMin + 1, largeurMax - 1);
-        float x2 = Random.Range(largeurMin + 1, largeurMax - 1);
+        float x1 = Random.Range(largeurMin + 1.3f, largeurMax - 1.3f);
+        float x2 = Random.Range(largeurMin + 1.3f, largeurMax - 1.3f);
         while (x2 < x1)
-            x2 = Random.Range(largeurMin + 1, largeurMax - 1);
+            x2 = Random.Range(largeurMin + 1.3f, largeurMax - 1.3f);
 
         float y1 = Random.Range(hauteurMin, hauteurMax);
         float y2 = Random.Range(hauteurMin, hauteurMax);
@@ -307,7 +316,8 @@ public class Chunk
         Vector3 point3 = new Vector3(point2.x, y2, 0);
         Vector3 point4 = new Vector3(point1.x, point3.y, 0);
         obstacles[0].CreateRectangle(point1, point2, point3, point4);
-        obstacles[0].DrawSegment();
+
+       // obstacles[0].DrawSegment();
 
         /*obstacles[0] = new Obstacle(Obstacle.HauteurObstacle.OBS_MILIEU, Obstacle.TypeObstacle.OBS_LIGNE);
         obstacles[0].CreateBord(new Vector3(p1.x, p1.y, p1.z), new Vector3(p1.x + largeurMax, p1.y, p1.z));
@@ -322,7 +332,7 @@ public class Chunk
         point2 = new Vector3(p1.x + largeurMax, p1.y, 0);
         point3 = new Vector3(Random.Range(p1.x + 1, p1.x + largeurMax - 1), Random.Range(obstacles[0].sommets[0].y + 1, hauteurMax), 0);
         obstacles[1].CreateTriangle(point1, point2, point3);                                             
-        obstacles[1].DrawSegment();
+       /// obstacles[1].DrawSegment();
 
 
         obstacles[2] = new Obstacle(Obstacle.HauteurObstacle.OBS_BAS, Obstacle.TypeObstacle.OBS_TRIANGLE);
@@ -330,7 +340,7 @@ public class Chunk
         point2 = new Vector3(p2.x + largeurMax, p2.y, 0);
         point3 = new Vector3(Random.Range(p2.x + 1, p2.x + largeurMax - 1), Random.Range(hauteurMin, obstacles[0].sommets[3].y - 1), 0);
         obstacles[2].CreateTriangle(point1, point2, point3);
-        obstacles[2].DrawSegment();
+        //obstacles[2].DrawSegment();
 
         
 

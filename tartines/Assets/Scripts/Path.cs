@@ -17,8 +17,9 @@ public class Path {
 
     int nbEntree = 2;
 
-    public void CreerChemin(Chunk c)
+    public void CreerChemins(Chunk c)
     {
+        PathSegments.Clear();
         List<Segment> segmentsList = c.segments;
         segmentsList.Sort((x, y) => x.p1.x.CompareTo(y.p1.x));
         foreach (Segment s in segmentsList)

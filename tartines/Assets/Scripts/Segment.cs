@@ -76,6 +76,8 @@ public class Segment
             col = Color.gray;
 
         l.DrawLineInGameView(p1, p2, col);
+
+        
     }
 
     public bool IsSame(Segment s)

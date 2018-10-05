@@ -7,7 +7,7 @@ public class LineDrawer
 {
     private LineRenderer lineRenderer;
     private float lineSize;
-    private GameObject lineObj;
+    public GameObject lineObj;
     public BoxCollider2D box = new BoxCollider2D();
     public Rigidbody2D boxRigid = new Rigidbody2D();
     public PhysicsMaterial2D material = (PhysicsMaterial2D)Resources.Load<PhysicsMaterial2D>("Slippery");

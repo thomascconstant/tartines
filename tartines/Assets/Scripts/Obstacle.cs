@@ -58,6 +58,10 @@ public class Obstacle {
             }
         segments[segments.Length - 1] = new LineDrawer();
         segments[segments.Length - 1].DrawLineInGameView(sommets[sommets.Length - 1], sommets[0], mycolor);
+
+        //on met le efface tout
+        foreach(LineDrawer l in segments)
+            l.lineObj.AddComponent<DestroyOutCamera>();
     }
 
     public void CreateBord(Vector3 p1, Vector3 p2)
