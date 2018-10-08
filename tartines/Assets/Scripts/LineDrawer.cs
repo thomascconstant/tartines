@@ -88,8 +88,10 @@ public class LineDrawer
 
         //ajout d'un collider sur le linerenderer
         BoxCollider2D bOld = lineObj.GetComponent<BoxCollider2D>();
+
         if (bOld)
             GameObject.Destroy(bOld);
+
         if(bCollide)
         {
             BoxCollider2D box = lineObj.AddComponent<BoxCollider2D>();

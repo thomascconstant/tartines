@@ -117,7 +117,6 @@ public class detectCollision: MonoBehaviour {
         {
             SpriteRenderer Color = this.GetComponent<SpriteRenderer>();
             Color.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-            Debug.Log("touchay");
             collide = false;
         }
 

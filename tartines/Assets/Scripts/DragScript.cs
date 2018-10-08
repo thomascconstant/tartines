@@ -7,10 +7,10 @@ public class DragScript : MonoBehaviour
 
     bool bDragging = false;
 
-        void OnMouseDrag()
-        {
+    void OnMouseDrag()
+    {
         
-        }
+    }
 
     void OnMouseExit()
     {
@@ -19,7 +19,9 @@ public class DragScript : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-
+        SpriteRenderer Color = this.GetComponent<SpriteRenderer>();
+        Color.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        //Color.color = new Color(1, 0, 0);
     }
 
 
@@ -33,23 +35,21 @@ public class DragScript : MonoBehaviour
                 bDragging = true;
 
             if (Input.GetButton("Fire1") && bDragging)
-        {
-
+            {
 
             if (toMouse.sqrMagnitude > 1)
                 toMouse = toMouse.normalized;
 
             //transform.position = mousePos;
             GetComponent<Rigidbody2D>().velocity = toMouse * 20;
-        }
-        else
-        {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            bDragging = false;
-        }
+
+            }
+            else
+            {
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                bDragging = false;
+            }
            
-
-
 
         Debug.DrawLine(new Vector3(mousePos.x, mousePos.y, 0), transform.position);
     }
