@@ -12,6 +12,7 @@ public class Segment
     public Segment nextMilieu;
     public Vector3 milieu;
     public Vector3 pointOpti;
+    public Vector3 pointSousOpti;
     public float taille;
     public float distanceObs;
     public float distanceAParcourir;
@@ -107,16 +108,6 @@ public class Segment
 
         return seg.milieu;
     }
-
-   /* public static Vector3 GetPointOpti(Segment seg)
-    {
-        if (seg.p1.y > seg.p2.y)
-            seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
-        else
-            seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
-
-        return seg.milieu;
-    }*/
 
 
 }

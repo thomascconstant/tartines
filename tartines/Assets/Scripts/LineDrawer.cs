@@ -12,6 +12,9 @@ public class LineDrawer
     public Rigidbody2D boxRigid = new Rigidbody2D();
     public PhysicsMaterial2D material = (PhysicsMaterial2D)Resources.Load<PhysicsMaterial2D>("Slippery");
 
+    public Vector3 pointEntree;
+    public Vector3 pointSortie;
+
 
     public LineDrawer(float lineSize = 0.2f)
     {

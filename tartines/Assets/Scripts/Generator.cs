@@ -31,6 +31,7 @@ public class Generator : MonoBehaviour {
                 chunks[i].BuildSegments();
             }
 
+
             
         }
 
@@ -38,7 +39,6 @@ public class Generator : MonoBehaviour {
         {
             c.ShowPath();
             c.ShowObstacles();
-
         }
 
     }

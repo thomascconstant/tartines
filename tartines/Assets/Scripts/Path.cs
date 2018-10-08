@@ -104,13 +104,16 @@ public class Path {
 
         List<Segment> cheminTemp = new List<Segment>();
         AddSegment(cheminTemp, segmentsList[0]);
+
+        LisserChemins(PathSegments);
      }
 
     void AddLine(Segment s1, Segment s2, Color col, float epaisseur, float diff)
     {
         LineDrawer l = new LineDrawer(epaisseur);
-
-        l.DrawLineInGameView((s1.p1 + s1.p2) / 2, (s2.p1 + s2.p2) / 2, col, false, s1, s2, diff);
+        l.pointEntree = s1.pointSousOpti;
+        l.pointSortie = s2.pointSousOpti;
+        l.DrawLineInGameView(l.pointEntree, l.pointSortie, col, false, s1, s2, diff);
         PathView.Add(l);
 
     }
@@ -140,15 +143,6 @@ public class Path {
             }
             epaisseur += 0.1f;
             diffChemin = 0;
-
-        }
-    }
-
-    public void AddSegmentChunks(List<Chunk> listChunk)
-    {
-        foreach (Chunk c in listChunk)
-        {
-            List<Segment> chemin = new List<Segment>();
 
         }
     }
@@ -216,13 +210,12 @@ public class Path {
         }
         else
         {
+
             chemin.Add(seg);
             List<Segment> bonChemin;
             
-            //CalculParam(bonChemin);
             PathSegments.Add(bonChemin = new List<Segment>(chemin));
             chemin.Clear();
-            // bonChemin.Clear();
         }
     }
 
@@ -232,6 +225,53 @@ public class Path {
         {
             chemin[i].distanceObs = Mathf.Abs(chemin[i].p1.x - chemin[i + 1].p1.x);
             chemin[i].distanceAParcourir = Mathf.Abs(chemin[i].milieu.y - chemin[i + 1].milieu.y);
+        }
+    }
+
+    public void LisserChemins(List<List<Segment>> chemins)
+    {
+        Chunk c = new Chunk();
+
+        foreach(List<Segment> chemin in chemins)
+        {
+            for(int i = 0; i < chemin.Count - 1; i++)
+            {
+                //chemin[i].pointSousOpti = chemin[i].milieu;
+
+                float yPrecedent = chemin[i].pointSousOpti.y;
+                float yBas = chemin[i + 1].p1.y + c.hauteurPerso/2;
+                float yHaut = chemin[i + 1].p2.y - c.hauteurPerso / 2; 
+
+                if (yBas > yHaut)
+                {
+                    float yTemp = yBas;
+                    yBas = yHaut;
+                    yHaut = yTemp;
+                }
+
+
+                if (chemin[i + 1] != null)
+                {
+                    if(yPrecedent < yBas && chemin[i + 1].hauteur == Segment.HauteurSegment.SEG_HAUT)
+                    {
+                        chemin[i + 1].pointOpti = new Vector3(chemin[i + 1].p1.x, (yBas), 0);
+                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, (0.7f* (yBas) + 0.3f*(chemin[i + 1].milieu.y)), 0);
+                    }
+                        
+                   
+                    if (yPrecedent > yHaut && chemin[i + 1].hauteur == Segment.HauteurSegment.SEG_BAS)
+                    {
+                        chemin[i + 1].pointOpti = new Vector3(chemin[i + 1].p1.x, (yHaut - c.hauteurPerso), 0);
+                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, (0.7f * (yHaut) + 0.3f * (chemin[i + 1].milieu.y)), 0);
+                    }
+                        
+                }
+                else
+                {
+                    Debug.Log(chemin[i].milieu);
+                }
+
+            }
         }
     }
 
