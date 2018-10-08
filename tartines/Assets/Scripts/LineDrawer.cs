@@ -83,6 +83,9 @@ public class LineDrawer
         lineRenderer.SetPosition(0, start);
         lineRenderer.SetPosition(1, end);
 
+        //Set Destroy if out of camera range
+        lineObj.AddComponent<DestroyOutCamera>();
+
         //ajout d'un collider sur le linerenderer
         BoxCollider2D bOld = lineObj.GetComponent<BoxCollider2D>();
         if (bOld)
@@ -112,8 +115,6 @@ public class LineDrawer
 
             }
 
-            //add rigidbody
-            //Rigidbody2D boxRigid = lineObj.AddComponent<Rigidbody2D>();
         }
 
 
@@ -123,7 +124,7 @@ public class LineDrawer
     {
         if (lineRenderer != null)
         {
-            UnityEngine.Object.Destroy(lineRenderer.gameObject);
+            UnityEngine.Object.Destroy(lineRenderer.gameObject); //pas sur de son utilité
         }
     }
 }

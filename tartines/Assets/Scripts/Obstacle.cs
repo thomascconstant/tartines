@@ -6,7 +6,7 @@ public class Obstacle {
     
     public Vector3[] sommets;
 
-    private LineDrawer[] segments;
+    public LineDrawer[] segments;
     private Color mycolor = Color.black;
 
     public enum HauteurObstacle
