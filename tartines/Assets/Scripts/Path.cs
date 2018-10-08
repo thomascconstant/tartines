@@ -180,7 +180,7 @@ public class Path {
         else if (seg.nextMilieu != null)
         {
 
-            if (seg.nextMilieu.nextUp != null && seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextUp.p1.x) < 0.5 && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextDown.p1.x) < 0.5)
+            if (seg.nextMilieu.nextUp != null && seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextUp.p1.x) < 1 && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextDown.p1.x) < 1)
             {
                 chemin.Add(seg);
                 List<Segment> cheminSec = new List<Segment>(chemin);
@@ -188,24 +188,25 @@ public class Path {
                 AddSegment(chemin, seg.nextMilieu.nextDown);
             }
 
-            else if (seg.nextMilieu.nextUp != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextUp.p1.x) < 0.5)
+            else if (seg.nextMilieu.nextUp != null && Mathf.Abs(seg.nextMilieu.nextUp.p1.x - seg.nextMilieu.p1.x) < 1)
             {
                 chemin.Add(seg);
                 AddSegment(chemin, seg.nextMilieu.nextUp);
             }
-            else if (seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextDown.p1.x) < 0.5)
+            else if (seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.nextDown.p1.x - seg.nextMilieu.p1.x) < 1)
             {
                 chemin.Add(seg);
                 AddSegment(chemin, seg.nextMilieu.nextDown);
             }
-            else if (seg.nextMilieu.nextMilieu != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextMilieu.p1.x) < 0.5)
+            else if (seg.nextMilieu.nextMilieu != null && Mathf.Abs(seg.nextMilieu.nextMilieu.p1.x - seg.nextMilieu.p1.x) < 1)
             {
                 chemin.Add(seg);
                 AddSegment(chemin, seg.nextMilieu);
             }
-            else if (Mathf.Abs(seg.p1.x - seg.nextMilieu.p1.x) < 0.5)
+            else if (Mathf.Abs(seg.nextMilieu.p1.x - seg.p1.x) < 1 && (seg.cote == Segment.CoteSegment.SEG_ENTREE || seg.cote == Segment.CoteSegment.SEG_SORTIE))
             {
-                AddSegment(chemin, seg.nextMilieu);
+                chemin.Add(seg);
+                AddSegment(chemin, seg.nextMilieu.nextMilieu);
             }
             else
             {

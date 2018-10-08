@@ -11,6 +11,7 @@ public class Segment
     public Segment nextDown;
     public Segment nextMilieu;
     public Vector3 milieu;
+    public Vector3 pointOpti;
     public float taille;
     public float distanceObs;
     public float distanceAParcourir;
@@ -37,17 +38,18 @@ public class Segment
 
     public Segment(Segment s)
     {
-       p1 = s.p1;
-       p2 = s.p2;
-       l = s.l;
-       nextUp = s.nextUp;
-       nextDown = s.nextDown;
-       nextMilieu = s.nextMilieu;
-       milieu = s.milieu;
-       taille = s.taille;
-       distanceObs = s.distanceObs;
-       distanceAParcourir = s.distanceAParcourir;
-       difficulte = s.difficulte;
+        p1 = s.p1;
+        p2 = s.p2;
+        l = s.l;
+        nextUp = s.nextUp;
+        nextDown = s.nextDown;
+        nextMilieu = s.nextMilieu;
+        milieu = s.milieu;
+        pointOpti = s.pointOpti;
+        taille = s.taille;
+        distanceObs = s.distanceObs;
+        distanceAParcourir = s.distanceAParcourir;
+        difficulte = s.difficulte;
     }
 
 
@@ -59,6 +61,7 @@ public class Segment
         p1 = new Vector3();
         p2 = new Vector3();
         milieu = new Vector3();
+        pointOpti = new Vector3();
     }
 
     public void Draw(Color col)
@@ -104,6 +107,16 @@ public class Segment
 
         return seg.milieu;
     }
+
+   /* public static Vector3 GetPointOpti(Segment seg)
+    {
+        if (seg.p1.y > seg.p2.y)
+            seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
+        else
+            seg.milieu.Set(seg.p1.x, (seg.p1.y + seg.p2.y) / 2, seg.p1.z);
+
+        return seg.milieu;
+    }*/
 
 
 }
