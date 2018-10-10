@@ -105,7 +105,7 @@ public class Path {
         List<Segment> cheminTemp = new List<Segment>();
         AddSegment(cheminTemp, segmentsList[0]);
 
-        LisserChemins(PathSegments);
+        
      }
 
     void AddLine(Segment s1, Segment s2, Color col, float epaisseur, float diff)
@@ -120,11 +120,13 @@ public class Path {
     public void DrawPath(Chunk c)
     {
         PathView.Clear();
+
         Color col = new Color();
         float epaisseur = 0.1f;
         float diffChemin = 0;
         foreach (List<Segment> chemin in PathSegments)
         {
+            LisserChemins(chemin);
             CalculParam(chemin);
             for (int j = 0; j < chemin.Count - 1; j++)
             {
@@ -228,51 +230,67 @@ public class Path {
         }
     }
 
-    public void LisserChemins(List<List<Segment>> chemins)
+    public void LisserChemins(List<Segment> chemin)
     {
         Chunk c = new Chunk();
 
-        foreach(List<Segment> chemin in chemins)
-        {
+
             for(int i = 0; i < chemin.Count - 1; i++)
             {
-                //chemin[i].pointSousOpti = chemin[i].milieu;
+                chemin[0].pointSousOpti = chemin[0].milieu;
+                chemin[i + 1].pointSousOpti = chemin[i + 1].milieu;
 
                 float yPrecedent = chemin[i].pointSousOpti.y;
-                float yBas = chemin[i + 1].p1.y + c.hauteurPerso/2;
-                float yHaut = chemin[i + 1].p2.y - c.hauteurPerso / 2; 
+                float yBas = chemin[i + 1].p1.y;
+                float yHaut = chemin[i + 1].p2.y; 
 
                 if (yBas > yHaut)
                 {
                     float yTemp = yBas;
-                    yBas = yHaut;
-                    yHaut = yTemp;
+                    yBas = yHaut + c.hauteurPerso / 2;
+                    yHaut = yTemp - c.hauteurPerso / 2;
                 }
 
 
-                if (chemin[i + 1] != null)
+            if (chemin[i + 1] != null)
+            {
+                if (chemin[i + 1].hauteur == Segment.HauteurSegment.SEG_HAUT)
                 {
-                    if(yPrecedent < yBas && chemin[i + 1].hauteur == Segment.HauteurSegment.SEG_HAUT)
+                    if (chemin[i + 1].cote != Segment.CoteSegment.SEG_NONE)
                     {
-                        chemin[i + 1].pointOpti = new Vector3(chemin[i + 1].p1.x, (yBas), 0);
-                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, (0.7f* (yBas) + 0.3f*(chemin[i + 1].milieu.y)), 0);
+                        chemin[i + 1].pointOpti = new Vector3(chemin[i + 1].p1.x, yBas, 0);
+                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, (yBas + chemin[i + 1].milieu.y) / 2, 0);
                     }
+                    else
+                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, chemin[i].pointSousOpti.y, 0);
+                } 
+
+
+            
                         
                    
-                    if (yPrecedent > yHaut && chemin[i + 1].hauteur == Segment.HauteurSegment.SEG_BAS)
+                else if (chemin[i + 1].hauteur == Segment.HauteurSegment.SEG_BAS)
+                {
+                    if (chemin[i + 1].cote != Segment.CoteSegment.SEG_NONE)
                     {
-                        chemin[i + 1].pointOpti = new Vector3(chemin[i + 1].p1.x, (yHaut - c.hauteurPerso), 0);
-                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, (0.7f * (yHaut) + 0.3f * (chemin[i + 1].milieu.y)), 0);
+                        chemin[i + 1].pointOpti = new Vector3(chemin[i + 1].p1.x, yHaut, 0);
+                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, (yHaut + chemin[i + 1].milieu.y) / 2, 0);
                     }
-                        
+                    else
+                        chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, chemin[i].pointSousOpti.y, 0);
                 }
+                else
+                    chemin[i + 1].pointSousOpti = new Vector3(chemin[i + 1].p1.x, (chemin[i].pointSousOpti.y + chemin[i + 1].milieu.y) / 2, 0);
+
+
+            }
                 else
                 {
                     Debug.Log(chemin[i].milieu);
                 }
 
             }
-        }
+        
     }
 
 }

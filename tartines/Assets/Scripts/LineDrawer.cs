@@ -64,9 +64,9 @@ public class LineDrawer
         if (s1 != null)
         {
             Text Diff = lineObj.AddComponent<Text>();
-            Diff.text = "Pour le segment 1: \nLe milieu est:" + s1.milieu + "\nLa taille du segment est:" + s1.taille  + "\nLa distance à parcourir est:" 
+            Diff.text = "Pour le segment 1: \nLe milieu est:" + s1.milieu + "\nLe point opti est" + s1.pointOpti + "\nLe point sous opti est" + s1.pointSousOpti + "\nLa taille du segment est:" + s1.taille  + "\nLa distance à parcourir est:" 
                 + s1.distanceAParcourir + "\nLa distance à l'obstacle est:" + s1.distanceObs +
-                "\n\nPour le segment 2: \nLe milieu est:" + s2.milieu + "\nLa taille du segment est:" + s2.taille +
+                "\n\nPour le segment 2: \nLe milieu est:" + s2.milieu + "\nLa taille du segment est:" + "\nLe point opti est" + s2.pointOpti + "\nLe point sous opti est" + s2.pointSousOpti + s2.taille +
                 "\n\nLa difficulté de ce segment est:" + s1.difficulte + 
                 "\n\nLa difficulté du chemin est:" + diff; 
         }
