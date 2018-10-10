@@ -214,9 +214,8 @@ public class Path {
         {
 
             chemin.Add(seg);
-            List<Segment> bonChemin;
             
-            PathSegments.Add(bonChemin = new List<Segment>(chemin));
+            PathSegments.Add(new List<Segment>(chemin));
             chemin.Clear();
         }
     }
@@ -239,8 +238,7 @@ public class Path {
             {
                 chemin[0].pointSousOpti = chemin[0].milieu;
                 chemin[i + 1].pointSousOpti = chemin[i + 1].milieu;
-
-                float yPrecedent = chemin[i].pointSousOpti.y;
+            
                 float yBas = chemin[i + 1].p1.y;
                 float yHaut = chemin[i + 1].p2.y; 
 

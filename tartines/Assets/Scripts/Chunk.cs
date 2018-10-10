@@ -287,6 +287,34 @@ public class Chunk
 
     }
 
+    public void GenerateChunkReset (Vector3 p1, Vector3 p2, float largeurChunk = 20)
+    {
+        largeurChunk = Random.Range(5, largeurChunk);
+
+        obstacles = new Obstacle[2];
+
+        float hauteurChunk = Mathf.Abs(p2.y - p1.y);
+
+        float largeur = Random.Range(largeurMin * largeurChunk, largeurMax * largeurChunk - (2 * hauteurPerso));
+        float x1 = Random.Range(hauteurPerso, largeurChunk - largeur - hauteurPerso);
+        float x2 = x1 + largeur;
+
+        float hauteur = hauteurPerso/2;
+        float y1 = hauteurChunk + hauteur;
+        float y2 = hauteurChunk - hauteur;
+
+        obstacles[0] = new Obstacle(Obstacle.HauteurObstacle.OBS_HAUT, Obstacle.TypeObstacle.OBS_TRIANGLE);
+        Vector3 point1 = new Vector3(p1.x, p1.y, 0);
+        Vector3 point2 = new Vector3(p1.x + largeurChunk, p1.y, 0);
+        Vector3 point3 = new Vector3((p1.x + largeurChunk/2 + 0.01f), y1, 0);
+        obstacles[0].CreateTriangle(point1, point2, point3);
+
+        obstacles[1] = new Obstacle(Obstacle.HauteurObstacle.OBS_BAS, Obstacle.TypeObstacle.OBS_TRIANGLE);
+        point1 = new Vector3(p1.x, p2.y, 0);
+        point2 = new Vector3(p1.x + largeurChunk, p2.y, 0);
+        point3 = new Vector3((p1.x + largeurChunk / 2 - 0.01f), y2, 0);
+        obstacles[1].CreateTriangle(point1, point2, point3);
+    }
 
 
 
