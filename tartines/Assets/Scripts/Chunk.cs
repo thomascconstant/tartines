@@ -297,7 +297,7 @@ public class Chunk
 
         float largeur = Random.Range(largeurMin * largeurChunk, largeurMax * largeurChunk - (2 * hauteurPerso));
         float x1 = Random.Range(hauteurPerso, largeurChunk - largeur - hauteurPerso);
-        float x2 = x1 + largeur;
+
 
         float hauteur = hauteurPerso/2;
         float y1 = hauteurChunk + hauteur;
