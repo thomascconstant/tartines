@@ -225,7 +225,7 @@ public class Chunk
 
         }
 
-        p.CreerChemins(this);
+        //p.CreerChemins(this);
         //segments.RemoveAll(s2 => s2.IsSame(segments[i]));
 
     }

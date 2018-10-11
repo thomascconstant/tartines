@@ -51,6 +51,8 @@ public class Segment
         distanceObs = s.distanceObs;
         distanceAParcourir = s.distanceAParcourir;
         difficulte = s.difficulte;
+        hauteur = s.hauteur;
+        cote = s.cote;
     }
 
 

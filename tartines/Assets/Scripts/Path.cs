@@ -126,7 +126,7 @@ public class Path {
         float diffChemin = 0;
         foreach (List<Segment> chemin in PathSegments)
         {
-            LisserChemins(chemin);
+            //LisserChemins(chemin);
             CalculParam(chemin);
             for (int j = 0; j < chemin.Count - 1; j++)
             {
@@ -151,25 +151,26 @@ public class Path {
 
     public void AddSegment(List<Segment> chemin, Segment seg)
     {
+
         if (seg.nextUp != null && seg.nextDown != null)
         {
-            
-            chemin.Add(seg);
+
+            chemin.Add(new Segment(seg));
             List<Segment> cheminBis = new List<Segment>(chemin);
             AddSegment(cheminBis, seg.nextUp);
             AddSegment(chemin, seg.nextDown);
-           
+
         }
         else if (seg.nextUp != null)
         {
-            chemin.Add(seg);
+            chemin.Add(new Segment(seg));
             AddSegment(chemin, seg.nextUp);
 
         }
         else if (seg.nextDown != null)
         {
-            
-            chemin.Add(seg);
+
+            chemin.Add(new Segment(seg));
             AddSegment(chemin, seg.nextDown);
 
         }
@@ -178,7 +179,7 @@ public class Path {
 
             if (seg.nextMilieu.nextUp != null && seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextUp.p1.x) < 1 && Mathf.Abs(seg.nextMilieu.p1.x - seg.nextMilieu.nextDown.p1.x) < 1)
             {
-                chemin.Add(seg);
+                chemin.Add(new Segment(seg));
                 List<Segment> cheminSec = new List<Segment>(chemin);
                 AddSegment(cheminSec, seg.nextMilieu.nextUp);
                 AddSegment(chemin, seg.nextMilieu.nextDown);
@@ -186,38 +187,40 @@ public class Path {
 
             else if (seg.nextMilieu.nextUp != null && Mathf.Abs(seg.nextMilieu.nextUp.p1.x - seg.nextMilieu.p1.x) < 1)
             {
-                chemin.Add(seg);
+                chemin.Add(new Segment(seg));
                 AddSegment(chemin, seg.nextMilieu.nextUp);
             }
             else if (seg.nextMilieu.nextDown != null && Mathf.Abs(seg.nextMilieu.nextDown.p1.x - seg.nextMilieu.p1.x) < 1)
             {
-                chemin.Add(seg);
+                chemin.Add(new Segment(seg));
                 AddSegment(chemin, seg.nextMilieu.nextDown);
             }
             else if (seg.nextMilieu.nextMilieu != null && Mathf.Abs(seg.nextMilieu.nextMilieu.p1.x - seg.nextMilieu.p1.x) < 1)
             {
-                chemin.Add(seg);
+                chemin.Add(new Segment(seg));
                 AddSegment(chemin, seg.nextMilieu);
             }
             else if (Mathf.Abs(seg.nextMilieu.p1.x - seg.p1.x) < 1 && (seg.cote == Segment.CoteSegment.SEG_ENTREE || seg.cote == Segment.CoteSegment.SEG_SORTIE))
             {
-                chemin.Add(seg);
+                chemin.Add(new Segment(seg));
                 AddSegment(chemin, seg.nextMilieu.nextMilieu);
             }
             else
             {
-                chemin.Add(seg);
+                chemin.Add(new Segment(seg));
                 AddSegment(chemin, seg.nextMilieu);
             }
         }
         else
         {
 
-            chemin.Add(seg);
-            
+            chemin.Add(new Segment(seg));
+
             PathSegments.Add(new List<Segment>(chemin));
             chemin.Clear();
         }
+        
+               
     }
 
     private void CalculParam(List<Segment> chemin)
@@ -229,11 +232,11 @@ public class Path {
         }
     }
 
-    public void LisserChemins(List<Segment> chemin)
+    public void LisserChemins(Chunk c)
     {
-        Chunk c = new Chunk();
+        
 
-
+        foreach(List<Segment> chemin in c.p.PathSegments)
             for(int i = 0; i < chemin.Count - 1; i++)
             {
                 chemin[0].pointSousOpti = chemin[0].milieu;
@@ -288,6 +291,43 @@ public class Path {
                 }
 
             }
+        
+    }
+
+    public void CreerToutChemin(Chunk c1, Chunk c2 = null)
+    {
+
+        
+        if (c2 != null)
+        {
+            c2.segments[0].pointSousOpti.y = c1.p.PathSegments[0][c1.p.PathSegments.Count - 1].pointSousOpti.y;
+            CreerChemins(c2);
+            foreach (List<Segment> chemin in PathSegments)
+            {
+                if (chemin.Count != 0)
+                    c2.p.PathSegments.Add(chemin);
+            }
+            c2.segments[0].pointSousOpti.y = c1.p.PathSegments[1][c1.p.PathSegments.Count - 1].pointSousOpti.y;
+            /*CreerChemins(c2);
+            foreach (List<Segment> chemin in PathSegments)
+            {
+                if (chemin.Count != 0)
+                    c2.p.PathSegments.Add(chemin);
+            }*/
+
+
+            LisserChemins(c2);
+        }
+        else
+        {
+            CreerChemins(c1);
+            foreach(List<Segment> chemin in PathSegments)
+            {
+                if (chemin.Count != 0)
+                    c1.p.PathSegments.Add(chemin);
+            }
+            LisserChemins(c1);
+        }
         
     }
 

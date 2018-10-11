@@ -7,7 +7,7 @@ public class Generator : MonoBehaviour {
     public static List<Chunk> chunks = new List<Chunk>();
     public float[] diffs;
     public float nb_chunks;
-
+    public Path p = new Path();
     // Use this for initialization
     void Start() {
         nb_chunks = 20;
@@ -25,15 +25,18 @@ public class Generator : MonoBehaviour {
             }
 
             
-            for (int t = 0; t < 100; t++)
+            for (int t = 0; t < 1; t++)
             {
-                if (i % 6 == 0)
+               /* if (i % 6 == 0)
                     chunks[i].GenerateChunkReset(p1, p2);
                     
-                else
-                    chunks[i].GenerateChunk(p1, p2);
-
+                else*/
+                chunks[i].GenerateChunk(p1, p2);
                 chunks[i].BuildSegments();
+                if (i < 1)
+                    p.CreerToutChemin(chunks[i]);
+                else if (chunks[i] != null)
+                    p.CreerToutChemin(chunks[i - 1], chunks[i]);
             }
 
 
