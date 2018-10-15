@@ -296,7 +296,6 @@ public class Chunk
         float hauteurChunk = Mathf.Abs(p2.y - p1.y);
 
         float largeur = Random.Range(largeurMin * largeurChunk, largeurMax * largeurChunk - (2 * hauteurPerso));
-        float x1 = Random.Range(hauteurPerso, largeurChunk - largeur - hauteurPerso);
 
 
         float hauteur = hauteurPerso/2;

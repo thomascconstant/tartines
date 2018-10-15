@@ -25,7 +25,7 @@ public class Generator : MonoBehaviour {
             }
 
             
-            for (int t = 0; t < 1; t++)
+            for (int t = 0; t < 100; t++)
             {
                /* if (i % 6 == 0)
                     chunks[i].GenerateChunkReset(p1, p2);
