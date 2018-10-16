@@ -13,7 +13,14 @@ public class Generator : MonoBehaviour {
         nb_chunks = 20;
         Vector3 p1 = new Vector3(0,15,0);
         Vector3 p2 = new Vector3(0,5, 0);
-       
+
+        int seed =(int)( Random.value*99999);
+        //seed = 17193;
+       // seed = 80752;
+        Random.InitState(seed);
+
+        Debug.Log(seed);
+              
         for (int i = 0; i < nb_chunks; i++)
         {
             chunks.Add(new Chunk());
@@ -25,13 +32,13 @@ public class Generator : MonoBehaviour {
             }
 
             
-            for (int t = 0; t < 100; t++)
+            for (int t = 0; t < 1; t++)
             {
                /* if (i % 6 == 0)
                     chunks[i].GenerateChunkReset(p1, p2);
                     
                 else*/
-                chunks[i].GenerateChunk(p1, p2);
+                chunks[i].GenerateChunk(p1, p2,5);
                 chunks[i].BuildSegments();
                 if (i < 1)
                     p.CreerToutChemin(chunks[i]);

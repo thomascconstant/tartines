@@ -67,7 +67,7 @@ public class Segment
         pointOpti = new Vector3();
     }
 
-    public void Draw(Color col)
+    public void Draw(Color col, bool showNext = false)
     {
         float epaisseur = 0.2f;
         if (hauteur == HauteurSegment.SEG_MILIEU)
@@ -83,7 +83,29 @@ public class Segment
 
         l.DrawLineInGameView(p1, p2, col);
 
-        
+        if (showNext)
+        {
+            if (nextUp != null)
+            {
+                LineDrawer l2 = new LineDrawer(0.1f);
+                l2.DrawLineInGameView(milieu, nextUp.milieu, Color.cyan);
+            }
+
+            if (nextDown != null)
+            {
+                LineDrawer l2 = new LineDrawer(0.1f);
+                l2.DrawLineInGameView(milieu, nextDown.milieu, Color.cyan);
+            }
+
+            if (nextMilieu != null)
+            {
+                LineDrawer l2 = new LineDrawer(0.1f);
+                l2.DrawLineInGameView(milieu, nextMilieu.milieu, Color.cyan);
+            }
+        }
+
+
+
     }
 
     public bool IsSame(Segment s)
